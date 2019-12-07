@@ -1,0 +1,69 @@
+
+body{
+	    background: #fff;
+}
+* {
+	margin: 0;
+	padding: 0;
+    background: #fff;
+}
+.labeldni{
+	color: #000;
+	font-weight: bold;
+	text-align: left;
+}
+#clock {
+	position: relative;
+	width: 600px;
+	height: 600px;
+	margin: 20px auto 0 auto;
+	background: url(../img/marcacion/clockface.jpg);
+	list-style: none;
+	}
+
+#sec, #min, #hour {
+	position: absolute;
+	width: 30px;
+	height: 600px;
+	top: 0px;
+	left: 285px;
+	}
+
+#sec {
+	background: url(../img/marcacion/sechand.png);
+	z-index: 3;
+   	}
+   
+#min {
+	background: url(../img/marcacion/minhand.png);
+	z-index: 2;
+   	}
+   
+#hour {
+	background: url(../img/marcacion/hourhand.png);
+	z-index: 1;
+   	}
+   	
+p {
+    text-align: center; 
+    padding: 10px 0 0 0;
+    }
+
+.alert strong , .alert .icon,.alert .mdi-close{
+	background: #ea4335;
+
+}    
+#ajaxmensaje h3{
+	font-size: 1.4em;
+	font-weight: bold;
+	text-align: center;
+	color: #34a853;
+}
+#ajaxmensaje .herror{
+	color: #ea4335;	
+}
+
+#ajaxmensaje .foto{
+	width: 200px;
+	height: 200px;
+}
