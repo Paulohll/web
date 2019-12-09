@@ -81,7 +81,7 @@
         </td>
         <td>
 
-          <span class="badge badge-primary btn-eyes btn-detalle-producto" 
+          <span class="badge badge-primary btn-eyes btn-detalle-pedido-autorizacion" 
                 data-id="{{Hashids::encode(substr($item->id, -8))}}">
             <span class="mdi mdi-eye  md-trigger"></span>
           </span>

@@ -20,9 +20,10 @@ $(document).ready(function(){
     $(".notacredito").on('click','#crearnotacredito_osiris', function() {
 
         var validacion_cantidad_productos    = $('#validacion_cantidad_productos').val();
-
+        abrircargando();
         if(validacion_cantidad_productos=='1'){
             alerterrorajax("La generación de notas de creditos no se completo");
+            cerrarcargando();
             return false;
         }else{
             return true;
@@ -133,6 +134,8 @@ $(document).ready(function(){
         $(this).parents('.fila_producto').remove();
         calcular_totales();
     });
+
+    
     $(".notacredito").on('click','.btn-detalle-producto', function() {
 
         var _token              = $('#token').val();

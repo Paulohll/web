@@ -84,7 +84,7 @@
 	    </tbody>
 	    <tfooter>
 	      <tr>
-		    <th colspan="3"></th>
+		    <th colspan="4"></th>
 	        <th class='p{{$pedido->id}}'>{{$pedido->total}}</th>
 	      </tr>
 	    </tfooter>
