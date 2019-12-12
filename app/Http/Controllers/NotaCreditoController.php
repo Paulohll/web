@@ -221,6 +221,8 @@ class NotaCreditoController extends Controller
 								$detaller->producto_id 						=  	$item->COD_PRODUCTO;
 								$detaller->regla_id 						=  	$regla_id;
 								$detaller->ordendetallereglas_id 			=  	$ordendetallereglas->id;
+								$detaller->cantidad                   		=   $item->CAN_PRODUCTO;
+                        		$detaller->precio                     		=   $item->CAN_PRECIO_UNIT;
 								$detaller->empresa_id 						=   Session::get('empresas')->COD_EMPR;
 								$detaller->centro_id 						=   Session::get('centros')->COD_CENTRO;
 								$detaller->save();
