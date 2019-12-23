@@ -425,8 +425,14 @@ class NotaCreditoMasivoController extends Controller
 	    									->where('WEB.documento_nota_credito.empresa_id','=',Session::get('empresas')->COD_EMPR)
 	    									->where('WEB.documento_nota_credito.txt_modulo','=','BOLETAS_MASIVAS')
 	    									->orderBy('lote', 'asc')
+	    									->select('nota_credito_id','codigo','contrato_id','orden_id','total_notacredito','documento_id',
+	    									'WEB.documento_nota_credito.fecha_crea',
+	    									'WEB.documento_nota_credito.id',
+	    									'WEB.documento_nota_credito.centro_id')
 	    									->get();
 	    									
+
+
 		$funcion 						= 	$this;
 		$notacredito                    =   new NotaCredito();
 

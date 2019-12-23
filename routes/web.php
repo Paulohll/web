@@ -61,24 +61,19 @@ Route::group(['middleware' => ['authaw']], function () {
 
 	Route::any('/ajax-actualizar-lista-regla', 'AsignarReglaController@actionAjaxActualizarListaRegla');
 	Route::any('/ajax-actualizar-modal-regla', 'AsignarReglaController@actionAjaxActualizarModalRegla');
-
 	Route::any('/ajax-actualizar-lista-regla-pr', 'AsignarReglaController@actionAjaxActualizarListaReglaPrecioRegular');
 	Route::any('/ajax-actualizar-modal-regla-pr', 'AsignarReglaController@actionAjaxActualizarModalReglaPrecioRegular');
-
 	Route::any('/ajax-eliminar-regla', 'AsignarReglaController@actionAjaxEliminarRegla');
 	Route::any('/ajax-guardar-precio-producto-contrato', 'AsignarReglaController@actionAjaxGuardarPrecioProductoContrato');
 	Route::any('/ajax-cambiar-estado-contrato', 'AsignarReglaController@actionAjaxCambiarEstadoContrato');
-
 	Route::any('/gestion-de-regla-de-negociacion/{idopcion}', 'ProductoController@actionListarReglaNegociacion');
 	Route::any('/agregar-regla-negociacion/{idopcion}', 'ProductoController@actionAgregarNegociacion');
 	Route::any('/modificar-regla-negociacion/{idopcion}/{idregla}', 'ProductoController@actionModificarNegociacion');
-
 	Route::any('/gestion-de-regla-de-precio-producto/{idopcion}', 'ProductoController@actionListarReglaPrecio');
 	Route::any('/agregar-regla-precio/{idopcion}', 'ProductoController@actionAgregarPrecio');
 	Route::any('/modificar-regla-precio/{idopcion}/{idregla}', 'ProductoController@actionModificarPrecio');
 
 	Route::any('/ajax-lista-reglas-descuento', 'ProductoController@actionListaReglasDescuento');
-
 
 	Route::any('/gestion-masiva-regla-precio/{idopcion}/{idregla}', 'GestionReglaController@actionGestionMasivaReglaPrecio');
 	Route::any('/asignar_reglas_masiva', 'GestionReglaController@actionAsignarReglas');
@@ -90,7 +85,6 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-lista-precio-producto_masivo', 'GestionProductoController@actionAjaxListaPrecioProductoMasiva');
 	Route::any('/ajax-actualizar-precio-producto-masivas', 'GestionProductoController@actionAjaxActualizarPrecioProductoMasivas');
 
-
 	Route::any('/gestion-de-regla-de-cupon-producto/{idopcion}', 'ProductoController@actionListarReglaCupones');
 	Route::any('/agregar-regla-cupon/{idopcion}', 'ProductoController@actionAgregarCupon');
 	Route::any('/modificar-regla-cupon/{idopcion}/{idregla}', 'ProductoController@actionModificarCupon');
@@ -99,7 +93,6 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/gestion-de-regla-de-precio-regular/{idopcion}', 'ProductoController@actionListarReglaPrecioRegular');
 	Route::any('/agregar-regla-precio-regular/{idopcion}', 'ProductoController@actionAgregarReglaPrecioRegular');
 	Route::any('/modificar-regla-precio-regular/{idopcion}/{idregla}', 'ProductoController@actionModificarPrecioRegular');
-
 
 	Route::any('/ajax-generarcupon', 'ProductoController@actionAjaxGenerarCupon');
 
@@ -110,13 +103,11 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-detalle-pedido-rechazar', 'OrdenPedidoController@actionAjaxDetallePedidoRechazar');
 	Route::any('/imprimir-pedido/{idpedido}', 'OrdenPedidoReporteController@actionImprimirPedido');
 
-	
 	Route::any('/gestion-de-orden-de-pedido/{idopcion}', 'OrdenPedidoController@actionListarTomaPedido');
 	Route::any('/ajax-listado-de-toma-pedidos', 'OrdenPedidoController@actionAjaxListarTomaPedido');
 	Route::any('/ajax-modal-detalle-pedido', 'OrdenPedidoController@actionAjaxDetallePedido');
 	Route::any('/enviar-a-osiris/{idopcion}', 'OrdenPedidoController@actionEnviarOsiris');
 	Route::any('/enviar-a-osiris-rechazar/{idopcion}', 'OrdenPedidoController@actionEnviarOsirisRechazar');
-
 
 	Route::any('/ajax-modal-detalle-pedido-mobil', 'OrdenPedidoController@actionAjaxDetallePedidoMobil');
 	Route::any('/ajax-listado-de-toma-pedidos-vendedor', 'OrdenPedidoController@actionAjaxListarTomaPedidoVendedor');
@@ -129,22 +120,17 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-guardar-cantidad-producto-pedido', 'OrdenPedidoController@actionAjaxGuardarCantidadProductoPedido');
 	Route::any('/ajax-guardar-precio-producto-pedido', 'OrdenPedidoController@actionAjaxGuardarPrecioProductoPedido');
 
-
 	/************************************** GENERALES ********************************************/
-
 	Route::any('/ajax-canal-responsable', 'GeneralAjaxController@actionCanalResponsable');
 	Route::any('/ajax-cliente-responsable', 'GeneralAjaxController@actionClienteResponsable');
 	Route::any('/ajax-subcanal_canal-responsable', 'GeneralAjaxController@actionSubCanalCanalResponsable');
 
-
 	/************************************** Reportes ********************************************/
-
 
 	Route::any('/reporte-reglas-cliente/{idopcion}', 'ReglaReporteController@actionReglasXcliente');
 	Route::any('/ajax-reporte-lista-regla-clientes', 'ReglaReporteController@actionAjaxReglasxCliente');
 	Route::any('/reglas-cliente-excel/{idcuenta}/{idtipoprecio}', 'ReglaReporteController@actionReglasClienteExcel');
 	Route::any('/reglas-cliente-pdf/{idcuenta}/{idtipoprecio}', 'ReglaReporteController@actionReglaClientePDF');
-
 
 	Route::any('/reporte-precio-producto-cliente/{idopcion}', 'ProductoReporteController@actionPrecioProductoXcliente');
 	Route::any('/ajax-reporte-lista-precio-producto', 'ProductoReporteController@actionAjaxProductosxCliente');
@@ -166,13 +152,11 @@ Route::group(['middleware' => ['authaw']], function () {
 	//Route::any('/precio-producto-canal-mayorista-excel/{fechadia}', 'ProductoReporteController@actionPrecioCanalMayoristaExcel');
 	Route::any('/anticipo-prestamo-masivo-pdf/{centro_id}/{fechainicio}/{fechafin}', 'ContablilidadReporteController@actionAnticipoPrestamoPDF');
 
-
 	Route::any('/gestion-de-cuentas/{idopcion}', 'CarteraController@index');
 	Route::any('/cartera', 'CarteraController@ListarCuentas');
 	Route::any('/cartera/saldos', 'CarteraController@SaldoCuenta');
 	Route::any('/categoria/listarCategoria','CategoriaController@ListarCategoria');
 	Route::any('/reglacredito/actualizar','AsignarReglaController@ActualizarReglaCredito');
-
 
 	Route::any('/gestion-de-nota-credito-autoservicios/{idopcion}', 'NotaCreditoController@actionListarNotaCreditoAutoservicio');
 	Route::any('/agregar-reglas-orden-cen/{idopcion}', 'NotaCreditoController@actionAgregarReglaOrdenCen');
@@ -191,7 +175,6 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-agregar-regla-orden-cen', 'NotaCreditoController@actionAjaxAgregarReglaOrdenCen');
 	Route::any('/ajax-lista-detalle-oredencen-nota-credito', 'NotaCreditoController@actionAjaxListaDetalleOrdenCenNotaCredito');
 
-	
 	Route::any('/gestion-de-generacion-nota-credito-masivo/{idopcion}', 'NotaCreditoMasivoController@actionListarNotaCreditoMasivo');
 	Route::any('/crear-nota-credito-masiva/{idopcion}', 'NotaCreditoMasivoController@actionCrearNotaCreditoMasivo');
 	Route::any('/ajax-modal-lista-orden-venta-nc', 'NotaCreditoMasivoController@actionAjaxModalListaOrdenVentaCuenta');
@@ -201,16 +184,19 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-generar-nota-credito', 'NotaCreditoMasivoController@actionAjaxModalGenerarNotaCredito');
 	Route::any('/ajax-detalle-producto-boleta-nc', 'NotaCreditoMasivoController@actionAjaxDetalleProductoBoletaNC');
 
-
 	//detracciones
 	Route::any('/gestion-de-detracciones/{idopcion}', 'DetraccionController@index');
 	Route::any('/detraccion/orden', 'DetraccionController@getOrden');
 	Route::any('/detraccion/procesar', 'DetraccionController@ProcesarPagoDetraccion');
 	Route::any('/detraccion/getserie', 'DetraccionController@GetSerie');
-
-
 	/*Route::any('/ajax-lista-precio-producto_masivo', 'GestionProductoController@actionAjaxListaPrecioProductoMasiva');
 	Route::any('/ajax-actualizar-precio-producto-masivas', 'GestionProductoController@actionAjaxActualizarPrecioProductoMasivas');*/
+
+
+    //DESPACHO (generar pedido)
+	Route::any('/gestion-de-generar-pedido/{idopcion}', 'PedidoDespachoController@actionListarGeneracionPedido');
+	/*Route::any('/crear-nota-credito-masiva/{idopcion}', 'NotaCreditoMasivoController@actionCrearNotaCreditoMasivo');
+	Route::any('/ajax-modal-lista-orden-venta-nc', 'NotaCreditoMasivoController@actionAjaxModalListaOrdenVentaCuenta');*/
 
 
 

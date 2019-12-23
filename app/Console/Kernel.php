@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
     {
 
 
-        //$schedule->command('servicio:delivery')->dailyAt('14:00');
+        $schedule->command('servicio:delivery')->dailyAt('14:00');
         $schedule->command('pedidonotificacion:despacho')->everyMinute(); // CADA MINUTO
         $schedule->command('pedidonotificacion:autorizar')->everyMinute(); // CADA MINUTO
         $schedule->command('pedidonotificacion:vendedor')->everyMinute(); // CADA MINUTO

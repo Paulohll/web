@@ -48,15 +48,15 @@ class ServicioDelivery extends Command
         $email     = WEBMaestro::where('codigoatributo','=','0001')->where('codigoestado','=','00003')->first();
 
         $array = array(
-            'aviso' => 'Delivery gratis'
+            'aviso' => 'Canal Youtube: Gran Chalán'
         );
 
-        Mail::send('emails.serviciodelivery', $array, function($message) use ($emailfrom,$email)
+        Mail::send('emails.canalyoutube', $array, function($message) use ($emailfrom,$email)
         {
 
             $emailprincipal     = explode(",", $email->correoprincipal);
             
-            $message->from($emailfrom->correoprincipal, 'DELIVERY GRATIS');
+            $message->from($emailfrom->correoprincipal, 'Canal Youtube: Gran Chalán');
 
             if($email->correocopia<>''){
                 $emailcopias        = explode(",", $email->correocopia);

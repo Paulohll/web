@@ -57,7 +57,7 @@
 
                             <td class="cell-detail">
                               <span>{{$notacredito->nota_credito_relaciona($item->id)}}</span>
-                              <span class="cell-detail-description-producto">Id : {{$item->nota_credito_id}}</span>           
+                              <span class="cell-detail-description-producto">Id : {{$item->nota_credito_id}} </span>           
                             </td>
 
 
