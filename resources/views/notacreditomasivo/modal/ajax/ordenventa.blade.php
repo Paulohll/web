@@ -6,7 +6,7 @@
       <span class="icon mdi mdi-search"></span>
     </a>
 
-    <input type="hidden" name="cuenta_id_m" id='cuenta_id_m' value = {{$cuenta_id}}>
+    <input type="hidden" name="cuenta_id_m_ov" id='cuenta_id_m_ov' value = {{$cuenta_id}}>
 
   </div>
 </div>

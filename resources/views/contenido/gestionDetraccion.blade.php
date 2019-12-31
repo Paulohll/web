@@ -32,5 +32,5 @@
 	<script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.print.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.colVis.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.bootstrap.js') }}" type="text/javascript"></script>  -->
-  <script src="{{ asset('public/js/app.js') }}" type="text/javascript"></script> 
+  <script src="{{ asset('public/js/app.js?v='.$version) }}" type="text/javascript"></script> 
 @stop

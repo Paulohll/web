@@ -1,13 +1,22 @@
 <div class="row">
 
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="panel-heading">Generacion de Nota de Crédito ({{$funcion->funciones->data_cliente($cuenta_id)->NOM_EMPR}})
-      <div class="tools tooltiptop">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+      <div class="panel-heading" style='font-size: 15px;'>Generacion de Nota de Crédito ({{$funcion->funciones->data_cliente($cuenta_id)->NOM_EMPR}} - {{$data_cod_orden_venta}}) 
+        <div class="tools tooltiptop">
+        </div>
+            <input type="hidden" name="cuenta_id_m" id='cuenta_id_m' value = {{$cuenta_id}}>
+            <input type="hidden" name="data_cod_orden_venta_m" id='data_cod_orden_venta_m' value = {{$data_cod_orden_venta}}>
       </div>
-
-          <input type="hidden" name="cuenta_id_m" id='cuenta_id_m' value = {{$cuenta_id}}>
-          <input type="hidden" name="data_cod_orden_venta_m" id='data_cod_orden_venta_m' value = {{$data_cod_orden_venta}}>
     </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+      <div class="panel-heading" style='font-size: 15px;'>Orden de Venta {{$data_cod_orden_venta}} - 
+
+      </div>
+    </div>
+
+
   </div>
 
   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -74,7 +83,7 @@
 
 
   <input type="hidden" name="tiene_asociadas" id='tiene_asociadas' value = {{$tiene_asociadas}}>
-  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style = 'margin-top: 16px;'>
 
     <div class="row">
       <div class="col-xs-6">
@@ -188,7 +197,11 @@
       <div class="col-xs-12">
 
         <div class="form-group">
+
           <div class="col-sm-12 abajocaja right">
+            <button class="btn btn-space btn-warning generar_autorizacion">
+              Generar autorización
+            </button> 
             <button class="btn btn-space btn-primary generar_nota_credito">
               Generar nota de credito
             </button> 

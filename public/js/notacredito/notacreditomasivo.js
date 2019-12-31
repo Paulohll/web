@@ -7,6 +7,7 @@ $(document).ready(function(){
     $(".notacredito").on('change','#motivo_id', function() {
 
         var motivo_id    =   $('#motivo_id').val();
+
         if(motivo_id == 'MEM0000000000004'){
             asignar_cantidades_original();
         }else{
@@ -78,6 +79,7 @@ $(document).ready(function(){
 
         if(serie.length<=0){alerterrorajax("Seleccione una serie para registrar");return false;}
         if(motivo_id.length<=0){alerterrorajax("Seleccione un motivo para registrar");return false;}
+
         if(cantidades==1){
             alerterrorajax("Hay productos con cantidades 0");
             return false;
@@ -217,7 +219,7 @@ $(document).ready(function(){
     $(".notacredito").on('click','#buscarordenventa_modal', function() {
 
         var _token              = $('#token').val();
-        var cuenta_id           = $('#cuenta_id_m').val();
+        var cuenta_id           = $('#cuenta_id_m_ov').val();
         var fechainicio         = $('#finicio').val();        
         var fechafin            = $('#ffin').val(); 
 
@@ -258,7 +260,7 @@ $(document).ready(function(){
     $(".notacredito").on('click','.filaconordenventa', function() {
 
         var _token                  = $('#token').val();
-        var cuenta_id               = $('#cuenta_id_m').val();
+        var cuenta_id               = $('#cuenta_id_m_ov').val();
         var data_cod_orden_venta    = $(this).attr('data_cod_orden_venta');
 
         abrircargando();
@@ -287,8 +289,9 @@ $(document).ready(function(){
 });
 
 function liberar_cantidades_original(){
+    var cantidad = 1.0000;
     $("#tabladetalleproductonc tbody tr").each(function(){
-        $(this).find('.columna-cantidad').find('#cantidad').val('0.0000');
+        $(this).find('.columna-cantidad').find('#cantidad').val(cantidad);
         $(this).find('.columna-cantidad').find('#cantidad').attr("disabled", false);
     });
 }

@@ -141,12 +141,12 @@ class NotaCreditoMasivoController extends Controller
 		// RECORRER TODOS LAS BOLETAS DE LA ORDEN SELECCIONADA
 		foreach($lista_documento_boletas as $i => $item){
 
+			$estado_boleta 				=   'libre';
 			//ver si la boleta esta libre o aun tiene cantidad
-			$nota_credito_asociada 		=  	$this->funciones->boleta_o_factura_asociada_nota_credito($item->COD_DOCUMENTO_CTBLE,'TDO0000000000007');
+			$nota_credito_asociada 		=  	$this->funciones->boleta_o_factura_asociada_nota_credito($item->COD_DOCUMENTO_CTBLE,'TDO0000000000007');				
 			if(count($nota_credito_asociada)>0){
 				$estado_boleta 			= 	$this->funciones->ind_faltante_en_boletas_nota_credito($item->COD_DOCUMENTO_CTBLE);
 			}
-
 
 			//tiene nota de credito
 			if($estado_boleta =='libre' or $estado_boleta == 'parcialmente'){
@@ -154,6 +154,7 @@ class NotaCreditoMasivoController extends Controller
 				$array_detalle_producto 			=	array();
 				$datasproductos_actualizado 		=	array();
 				$total 								=	0.0;
+
 
 				foreach($datasproductos as $key => $obj){
 
@@ -175,6 +176,7 @@ class NotaCreditoMasivoController extends Controller
 					$lista_detalle_producto  		= 	$this->funciones->lista_detalle_producto_orden_venta($item->COD_DOCUMENTO_CTBLE,$producto_id);
 					$array_nuevo_producto 			=	array();
 
+
 					// Productos seleccionados esta dentro del Detalle del documento 
 					while($row = $lista_detalle_producto->fetch())
 					{
@@ -183,6 +185,7 @@ class NotaCreditoMasivoController extends Controller
 						if($producto_id == $row['COD_PRODUCTO']){
 							// que tenga cantidad por lo menos
 							if($cantidad>0){
+
 
 								$can_producto = (float)$row['CAN_PRODUCTO'] - $cantidad_diferencia;
 								//cantidad mayor al detalle
@@ -250,6 +253,8 @@ class NotaCreditoMasivoController extends Controller
 
 			}
 		}
+
+
 
 
 		$validacion_cantidad_productos = 0;
@@ -365,8 +370,8 @@ class NotaCreditoMasivoController extends Controller
 
 		$cuenta_id 			= $request['cuenta_id'];
 	    $tipo_documento_id 	= 'TDO0000000000003'; //boletas
-	    $fecha_inicio 		= date_format(date_create($this->inicio), 'Y-m-d');
-	    $fecha_fin 			= date_format(date_create($this->fin), 'Y-m-d');
+	    $fecha_inicio 		= date_format(date_create($this->inicio), 'd-m-Y');
+	    $fecha_fin 			= date_format(date_create($this->fin), 'd-m-Y');
 
 		$array_orden 		= $this->funciones->array_orden_venta_documento_fechas_cuenta($tipo_documento_id,$fecha_inicio,$fecha_fin,$cuenta_id);
 		$lista_orden 		= $this->funciones->lista_orden_venta_array_orden($array_orden);
@@ -388,6 +393,7 @@ class NotaCreditoMasivoController extends Controller
 	{
 
 		$cuenta_id 			= $request['cuenta_id'];
+
 	    $tipo_documento_id 	= 'TDO0000000000003'; //boletas
 	    $fecha_inicio 		= date_format(date_create($request['fechainicio']), 'Y-m-d');
 	    $fecha_fin 			= date_format(date_create($request['fechafin']), 'Y-m-d');
