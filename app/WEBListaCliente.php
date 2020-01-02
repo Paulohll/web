@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Session;
 class WEBListaCliente extends Model
 {
     protected $table = 'WEB.LISTACLIENTE';
@@ -46,6 +46,22 @@ class WEBListaCliente extends Model
         if(trim($subcanal) != ''){
             $query->where('COD_CATEGORIA_SUB_CANAL', '=', $subcanal);
         }
+    }
+
+    public function scopeAdicionarvendedor($query,$name){
+
+
+        if(trim($name) != ''){
+
+            $query->Where(function($q){
+                    $q->Where('COD_CATEGORIA_JEFE_VENTA','=', @Session::get('usuario')->fuerzaventa_id = null ? 'COD_CATEGORIA_JEFE_VENTA' : Session::get('usuario')->fuerzaventa_id);
+                    $q->orWhere('COD_CATEGORIA_JEFE_VENTA', '=', 'JVE0000000000041');
+                });
+        }else{
+            $query->Where('COD_CATEGORIA_JEFE_VENTA','=', @Session::get('usuario')->fuerzaventa_id = null ? 'COD_CATEGORIA_JEFE_VENTA' : Session::get('usuario')->fuerzaventa_id);
+
+        }
+
     }
 
 

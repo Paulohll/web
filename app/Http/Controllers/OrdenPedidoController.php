@@ -846,11 +846,19 @@ class OrdenPedidoController extends Controller
 		}else{
 
 
+			//adicionar clientes
+			$id_vendedor_adicionar = '';
+			if(Session::get('usuario')->fuerzaventa_id=='JVE0000000000016'){
+				$id_vendedor_adicionar = 'adicionar';
+			}
+
+
 		    $listaclientes 		= 	WEBListaCliente::where('COD_EMPR','=',Session::get('empresas')->COD_EMPR)
 									->where('COD_CENTRO','=',Session::get('centros')->COD_CENTRO)
-									->where('COD_CATEGORIA_JEFE_VENTA','=',@Session::get('usuario')->fuerzaventa_id = null ? 'COD_CATEGORIA_JEFE_VENTA' : Session::get('usuario')->fuerzaventa_id )
+									->Adicionarvendedor($id_vendedor_adicionar)
 									->orderBy('NOM_EMPR', 'asc')
 									->get();
+	
 		
 			$listaproductos 	= 	DB::table('WEB.LISTAPRODUCTOSAVENDER')
 									->where('IND_MOVIL','=',1)
