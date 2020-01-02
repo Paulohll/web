@@ -494,7 +494,8 @@ class NotaCredito{
         $lista_series           =       WEBLISTASERIE::where('COD_EMPR','=',Session::get('empresas')->COD_EMPR)
                                         ->where('COD_CENTRO','=',Session::get('centros')->COD_CENTRO)
                                         ->where('COD_TRAB','=',$trabajador->COD_TRAB)
-                                        ->where('COD_CATEGORIA_TIPO_DOCUMENTO','=','TDO0000000000007')
+                                        ->where('COD_CATEGORIA_TIPO_DOCUMENTO','=','TDO0000000000007') //PARAMETRO FALTA
+                                        ->where('NRO_SERIE', 'like', 'B%') //PARAMETRO FALTA
                                         ->pluck('NRO_SERIE','NRO_SERIE')
                                         ->toArray();
                  
