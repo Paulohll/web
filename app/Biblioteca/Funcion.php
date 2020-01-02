@@ -268,8 +268,8 @@ class Funcion{
 							        })
 									->where('CMP.ORDEN.COD_ESTADO','=',1)        
 									->where('CMP.ORDEN.COD_EMPR','=',Session::get('empresas')->COD_EMPR)
-									->where('CMP.ORDEN.FEC_ORDEN','>=',$fecha_inicio) 
-									->where('CMP.ORDEN.FEC_ORDEN','<=',$fecha_fin)
+									//->where('CMP.ORDEN.FEC_ORDEN','>=',$fecha_inicio) 
+									//->where('CMP.ORDEN.FEC_ORDEN','<=',$fecha_fin)
 		                            ->where('CMP.ORDEN.COD_CONTRATO','=',$cuenta_id)
 		                            ->where('CMP.ORDEN.COD_CATEGORIA_ESTADO_ORDEN','=','EOR0000000000003') // solo ordenes terminadas
 							        /*->where(function ($query){
