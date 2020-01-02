@@ -494,7 +494,7 @@ class NotaCredito{
         $lista_series           =       WEBLISTASERIE::where('COD_EMPR','=',Session::get('empresas')->COD_EMPR)
                                         ->where('COD_CENTRO','=',Session::get('centros')->COD_CENTRO)
                                         ->where('COD_TRAB','=',$trabajador->COD_TRAB)
-                                        // -> where('COD_CATEGORIA_TIPO_DOCUMENTO','=',$tipodocumento_id)
+                                        ->where('COD_CATEGORIA_TIPO_DOCUMENTO','=','TDO0000000000007')
                                         ->pluck('NRO_SERIE','NRO_SERIE')
                                         ->toArray();
                  
