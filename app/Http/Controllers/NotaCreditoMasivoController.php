@@ -395,8 +395,8 @@ class NotaCreditoMasivoController extends Controller
 		$cuenta_id 			= $request['cuenta_id'];
 
 	    $tipo_documento_id 	= 'TDO0000000000003'; //boletas
-	    $fecha_inicio 		= date_format(date_create($request['fechainicio']), 'Y-m-d');
-	    $fecha_fin 			= date_format(date_create($request['fechafin']), 'Y-m-d');
+	    $fecha_inicio 		= date_format(date_create($request['fechainicio']), 'd-m-Y');
+	    $fecha_fin 			= date_format(date_create($request['fechafin']), 'd-m-Y');
 
 		$array_orden 		= $this->funciones->array_orden_venta_documento_fechas_cuenta($tipo_documento_id,$fecha_inicio,$fecha_fin,$cuenta_id);
 		$lista_orden 		= $this->funciones->lista_orden_venta_array_orden($array_orden);
