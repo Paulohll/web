@@ -343,7 +343,8 @@ class NotaCreditoMasivoController extends Controller
 
 		$combo_series 					= $notacredito->combo_series();
 
-		$motivos_array 					= ['MEM0000000000004','MEM0000000000016','MEM0000000000017','MEM0000000000007'];
+		//$motivos_array 					= ['MEM0000000000004','MEM0000000000016','MEM0000000000017','MEM0000000000007'];
+		$motivos_array 					= ['MEM0000000000004','MEM0000000000016'];
 		$combo_motivos 					= $notacredito->combo_motivos_documento('TDO0000000000007',$motivos_array);
 
 
