@@ -154,7 +154,21 @@
                               autocomplete="off" 
                               class="form-control input-md dinero updatecantidad"/>
                 </td>
-                <td class= 'columna-precio'>{{$row['CAN_PRECIO_UNIT']}}</td>
+                <td class= 'columna-precio'
+                    data_precio_original = "{{$row['CAN_PRECIO_UNIT']}}">
+
+                      <input  type="text"
+                              id="precio"
+                              name='precio'
+                              value="{{$row['CAN_PRECIO_UNIT']}}"
+                              placeholder="Precio"
+                              required = ""
+                              autocomplete="off"
+                              class="form-control input-md dinero updateprecio"/>
+                    
+                </td>
+
+
                 <td class= 'columna-importe'>0.0000</td>
 
                 <td class= 'columna-eliminar'>
@@ -166,7 +180,7 @@
           </tbody>
           <tfooter>
             <tr>
-            <th colspan="3"></th>
+              <th colspan="3"></th>
               <th class='total_nota_credito'>0.0000</th>
               <th></th>
             </tr>

@@ -80,7 +80,7 @@ class OsirisMasivo{
                 $txt_nro_pedido                                 =       (string)$documento_contable->TXT_NRO_PEDIDO;//REQUEST
                 $ind_notificacion_cliente                       =       'False,';
 
-                $txt_glosa                                      =       $glosa.' / lote web '.$lote;//'// TOTTU TRUJILLO / 3997 / 3998,';
+                $txt_glosa                                      =       $glosa.' / lote web '.$lote.' OV/ '.$data_cod_orden_venta;//'// TOTTU TRUJILLO / 3997 / 3998,';
                 $cod_estado                                     =       1;
                 $cod_usuario_registro                           =       Session::get('usuario')->name;
 

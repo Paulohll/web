@@ -343,8 +343,8 @@ class NotaCreditoMasivoController extends Controller
 
 		$combo_series 					= $notacredito->combo_series();
 
-		//$motivos_array 					= ['MEM0000000000004','MEM0000000000016','MEM0000000000017','MEM0000000000007'];
-		$motivos_array 					= ['MEM0000000000004','MEM0000000000016'];
+		$motivos_array 					= ['MEM0000000000004','MEM0000000000016','MEM0000000000007'];
+		//$motivos_array 					= ['MEM0000000000004','MEM0000000000016'];
 		$combo_motivos 					= $notacredito->combo_motivos_documento('TDO0000000000007',$motivos_array);
 
 
@@ -432,7 +432,7 @@ class NotaCreditoMasivoController extends Controller
 	    									->where('WEB.documento_nota_credito.empresa_id','=',Session::get('empresas')->COD_EMPR)
 	    									->where('WEB.documento_nota_credito.txt_modulo','=','BOLETAS_MASIVAS')
 	    									->orderBy('lote', 'asc')
-	    									->select('nota_credito_id','codigo','contrato_id','orden_id','total_notacredito','documento_id',
+	    									->select('lote','nota_credito_id','codigo','contrato_id','orden_id','total_notacredito','documento_id',
 	    									'WEB.documento_nota_credito.fecha_crea',
 	    									'WEB.documento_nota_credito.id',
 	    									'WEB.documento_nota_credito.centro_id')

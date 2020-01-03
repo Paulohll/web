@@ -67,7 +67,10 @@ $(document).ready(function(){
     $(".notacredito").on('click','.generar_nota_credito', function() {
 
         var _token                  =   $('#token').val();
+
         var cantidades              =   validar_cantidades();
+        var precios                 =   validar_precios();
+
         var flias                   =   validar_filas();
         var cuenta_id               =   $('#cuenta_id_m').val();
         var data_cod_orden_venta    =   $('#data_cod_orden_venta_m').val();
@@ -80,7 +83,13 @@ $(document).ready(function(){
         if(serie.length<=0){alerterrorajax("Seleccione una serie para registrar");return false;}
         if(motivo_id.length<=0){alerterrorajax("Seleccione un motivo para registrar");return false;}
 
-        if(cantidades==1){
+
+        if(precios==1 ){
+            alerterrorajax("Hay precios con cantidades 0");
+            return false;
+        }
+
+        if(cantidades==1 ){
             alerterrorajax("Hay productos con cantidades 0");
             return false;
         }
@@ -170,14 +179,15 @@ $(document).ready(function(){
 
     $(".notacredito").on('keyup','.updatecantidad', function(e) {
 
-        var cantidad                =   parseFloat($(this).val().trim());
-        var precio                  =   parseFloat($(this).parents('.fila_producto').find('.columna-precio').html().trim());
-        var importe                 =   (cantidad*precio).toFixed(4);
-
-        //importe
-        $(this).parents('.fila_producto').find('.columna-importe').html(importe);
+        calcular_sub_totales();
         calcular_totales();
 
+    });
+
+
+    $(".notacredito").on('keyup','.updateprecio', function(e) {
+        calcular_sub_totales();
+        calcular_totales();
     });
 
 
@@ -291,8 +301,11 @@ $(document).ready(function(){
 function liberar_cantidades_original(){
     var cantidad = 1.0000;
     $("#tabladetalleproductonc tbody tr").each(function(){
-        $(this).find('.columna-cantidad').find('#cantidad').val(cantidad);
+
+        //var cantidad_original = $(this).find('.columna-cantidad').attr('data_cantidad_original');
+        $(this).find('.columna-cantidad').find('#cantidad').val(0);
         $(this).find('.columna-cantidad').find('#cantidad').attr("disabled", false);
+
     });
 }
 
@@ -312,7 +325,7 @@ function dataenviar(){
 
         producto_id     = $(this).attr('data_producto_id');
         cantidad        = $(this).find('.columna-cantidad').find('#cantidad').val();
-        precio          = $(this).find('.columna-precio').html();
+        precio          = $(this).find('.columna-precio').find('#precio').val();
 
         data.push({
             producto_id     : producto_id,
@@ -326,17 +339,47 @@ function dataenviar(){
 }
 
 
+function calcular_sub_totales(){
+
+    $("#tabladetalleproductonc .listatabladetalle tr").each(function(){
+        var cantidad    = parseFloat($(this).find('.columna-cantidad').find('#cantidad').val().trim());
+        var precio      = parseFloat($(this).find('.columna-precio').find('#precio').val().trim());
+
+        if(isNaN(cantidad)){cantidad = 0;}
+        if(isNaN(precio)){precio = 0;}
+
+        var importe     = (cantidad*precio).toFixed(4);
+        $(this).find('.columna-importe').html(importe);
+    });
+
+}
+
+
+
 
 function validar_cantidades(){
     var sw = 0;
-    $("#tabladetalleproductonc tbody tr").each(function(){
+    $("#tabladetalleproductonc .listatabladetalle tr").each(function(){
         var cantidad    = parseFloat($(this).find('.columna-cantidad').find('#cantidad').val());
-        if( cantidad <= 0) {
+        if( cantidad <= 0 || isNaN(cantidad)) {
             sw = 1;
         }
     });
     return sw;
 }
+
+function validar_precios(){
+    var sw = 0;
+    $("#tabladetalleproductonc .listatabladetalle tr").each(function(){
+        var precio    = parseFloat($(this).find('.columna-precio').find('#precio').val());
+        if( precio <= 0 || isNaN(precio)) {
+            sw = 1;
+        }
+    });
+    return sw;
+}
+
+
 
 function validar_filas(){
     var sw = 0;
