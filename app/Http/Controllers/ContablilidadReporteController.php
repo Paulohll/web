@@ -44,12 +44,13 @@ class ContablilidadReporteController extends Controller
 	{
 
 
+
         //ACTUAL
 		$listaliquidacioncompra 					=	WEBNotaIngreso::where('COD_EMPRESA','=',Session::get('empresas')->COD_EMPR)
 														//->where('COD_CENTRO','=',$centro_id)
-														->where('FEC_AUTORIZACION','>=', $fechainicio)
-	    												->where('FEC_AUTORIZACION','<=', $fechafin)
-														->where('SERIE','=','IC201802')
+														//->where('FEC_AUTORIZACION','>=', $fechainicio)
+	    												//->where('FEC_AUTORIZACION','<=', $fechafin)
+														->where('SERIE','=','II201801')
 	    												->orderBy('FEC_AUTORIZACION', 'asc')
 														->get();
 

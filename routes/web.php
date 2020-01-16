@@ -195,8 +195,9 @@ Route::group(['middleware' => ['authaw']], function () {
 
     //DESPACHO (generar pedido)
 	Route::any('/gestion-de-generar-pedido/{idopcion}', 'PedidoDespachoController@actionListarGeneracionPedido');
-	/*Route::any('/crear-nota-credito-masiva/{idopcion}', 'NotaCreditoMasivoController@actionCrearNotaCreditoMasivo');
-	Route::any('/ajax-modal-lista-orden-venta-nc', 'NotaCreditoMasivoController@actionAjaxModalListaOrdenVentaCuenta');*/
+	Route::any('/crear-orden-pedido-despacho/{idopcion}', 'PedidoDespachoController@actionCrearPedidoDepacho');
+	Route::any('/ajax-modal-lista-orden-cen-producto', 'PedidoDespachoController@actionAjaxModalListaOrdenCenProducto');
+	Route::any('/ajax-modal-agregar-productos-orden-cen', 'PedidoDespachoController@actionAjaxModalAgregarProductosOrdenCen');
 
 
 

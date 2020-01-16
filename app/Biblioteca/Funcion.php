@@ -14,6 +14,37 @@ use PDO;
 
 class Funcion{
 
+
+
+	public function lista_orden_cen($empresa_id,$cliente_id,$centro_id,$fecha_inicio,$fecha_fin){
+
+		$tipo_operacion = 'LIS';
+		$tipo_orden_id 	= 'TOR0000000000024';
+
+
+        $stmt 	= 	DB::connection('sqlsrv')->getPdo()->prepare('SET NOCOUNT ON;EXEC CMP.ORDEN_LISTAR 
+        			@IND_TIPO_OPERACION = ?, 
+        			@COD_EMPR = ?, 
+        			@COD_CATEGORIA_TIPO_ORDEN = ?, 
+        			@COD_EMPR_CLIENTE = ?,
+        			@COD_CENTRO = ?, 
+        			@FEC_ORDEN = ?, 
+        			@FEC_ORDEN_FIN = ?');
+        $stmt->bindParam(1, $tipo_operacion ,PDO::PARAM_STR);                   
+        $stmt->bindParam(2, $empresa_id  ,PDO::PARAM_STR);                        			
+        $stmt->bindParam(3, $tipo_orden_id ,PDO::PARAM_STR);                           			
+        $stmt->bindParam(4, $cliente_id  ,PDO::PARAM_STR);                        		
+        $stmt->bindParam(5, $centro_id ,PDO::PARAM_STR);                           			
+        $stmt->bindParam(6, $fecha_inicio  ,PDO::PARAM_STR);
+        $stmt->bindParam(7, $fecha_fin  ,PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt;
+
+	}
+
+
+
 	public function data_detalle_producto_sum_cantidad($documento_id,$producto_id) {
 
 		//devuelve las nota de credito asociada a la boletas
@@ -30,10 +61,6 @@ class Funcion{
 		return $producto;
 
 	}
-
-
-
-
 
 
 	public function ind_faltante_en_boletas_nota_credito($documento_id) {

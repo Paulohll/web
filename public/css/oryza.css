@@ -1,4 +1,11 @@
+#despacholocen tbody tr,#despacholop tbody tr{
+  cursor: pointer;
+}
 
+
+.modal-pedido-poc .be-datatable-header{
+      padding: 8px !important;
+}
 .columna-success-table{
   color: #fff;
   background-color: #5cb85c;
@@ -137,10 +144,11 @@ border: 1px solid rgba(92, 92, 92, 0.5);
 border-radius: 10px;
 }  
 .scroll_text::-webkit-scrollbar-thumb:hover {  
-    background-color: #000;  
-  
+    background-color: #000;
 }  
-
+.scroll_text_heigth_poc{
+    height:400px !important;
+}
 .badgenotacredito,.badgeelimnar{
   cursor: pointer;
 }
@@ -768,7 +776,7 @@ border-radius: 10px;
 
 
 .modal-content .modal-header{
-  padding: 0px !important;
+  /*padding: 0px !important;*/
 }
 
 /********* popover ********/

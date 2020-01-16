@@ -12,7 +12,7 @@
 </div>
 
 
-<div class="modal-header">
+<div class="modal-header" style = "padding: 0px !important;">
 	<div class="panel-heading">
 
     <div class='filtrotabla row'>

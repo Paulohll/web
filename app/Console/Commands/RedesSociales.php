@@ -48,15 +48,15 @@ class RedesSociales extends Command
         $email     = WEBMaestro::where('codigoatributo','=','0001')->where('codigoestado','=','00003')->first();
 
         $array = array(
-            'aviso' => 'seamos tendencia'
+            'aviso' => 'Nueva Presentación - Gran Chalán'
         );
 
-        Mail::send('emails.serviciodelivery', $array, function($message) use ($emailfrom,$email)
+        Mail::send('emails.nuevapresentacion', $array, function($message) use ($emailfrom,$email)
         {
 
             $emailprincipal     = explode(",", $email->correoprincipal);
             
-            $message->from($emailfrom->correoprincipal, 'SEAMOS TENDENCIA');
+            $message->from($emailfrom->correoprincipal, 'Nueva Presentación - Gran Chalán');
 
             if($email->correocopia<>''){
                 $emailcopias        = explode(",", $email->correocopia);

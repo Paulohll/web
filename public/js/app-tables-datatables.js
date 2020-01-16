@@ -113,17 +113,22 @@ var App = (function () {
     });
 
 
+    $("#despacholop").dataTable({
+        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+        "bPaginate": false
+    });
 
-
-
-
-
+    $("#despacholocen").dataTable({
+        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+        order : [[ 2, "desc" ]],
+        "bPaginate": false
+    });
 
 
     $("#tableperfiles").dataTable({
         "lengthMenu": [[500, 1000, -1], [500, 1000, "All"]],
         order : [[ 2, "desc" ]],
-        "bPaginate": false,
+        "bPaginate": false
     });
 
     $("#table1").dataTable({
