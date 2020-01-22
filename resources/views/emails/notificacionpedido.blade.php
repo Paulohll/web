@@ -149,7 +149,7 @@
                                  </td>
                              </tr>
                              <tr>  
-                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Días ya vencidos :  </td>
+                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Días transcurridos :  </td>
                                  <td style="font-size:13px;color:#191970">
                                     @foreach($deuda_antigua as $deu)
                                         {{$deu->diasTranscurridos}}
