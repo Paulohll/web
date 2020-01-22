@@ -99,7 +99,7 @@
                              <tbody>
                              <tr>    
                              <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Valorizado:  </td>
-                             <td style="font-size:13px;color:#191970"> {{$NP->total}} </td>
+                             <td style="font-size:13px;color:#191970"> {{number_format($NP->total, 2, '.', ',')}}</td>
                              </tr>
                              </tbody>
                              </table>
@@ -113,7 +113,8 @@
                                     @foreach($saldo as $it)
                                 <?php $sum += $it->SALCON; ?>
                                     @endforeach
-                                {{$sum}}
+
+                                {{number_format($sum, 2, '.', ',')}}
                              </td>
                              </tr>
                              </tbody>
@@ -125,7 +126,7 @@
                              <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Limite de credito:  </td>
                              <td style="font-size:13px;color:#191970"> 
                                 @if(count($limite_credito)>0) 
-                                    {{$limite_credito->canlimitecredito}}
+                                    {{number_format($limite_credito->canlimitecredito, 2, '.', ',')}}
                                 @else
                                     -    
                                 @endif
@@ -149,7 +150,7 @@
                                  </td>
                              </tr>
                              <tr>  
-                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Días transcurridos :  </td>
+                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Días transcurrido:  </td>
                                  <td style="font-size:13px;color:#191970">
                                     @foreach($deuda_antigua as $deu)
                                         {{$deu->diasTranscurridos}}
@@ -160,7 +161,7 @@
                                  <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Saldo a pagar:  </td>
                                  <td style="font-size:13px;color:#191970">
                                     @foreach($deuda_antigua as $deu)
-                                        {{$deu->CAN_SALDO}}
+                                        {{number_format($deu->CAN_SALDO, 2, '.', ',')}}
                                     @endforeach
                                  </td>
                              </tr>
