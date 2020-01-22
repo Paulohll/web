@@ -15,6 +15,80 @@ use PDO;
 class Funcion{
 
 
+	public function crearrolwpan($field_grupo, $index, $grupo){
+
+		$sw_crear  =  0;
+        //es el primer valor
+        if($index == 0){
+          	$grupo     =  $field_grupo;
+          	$sw_crear  =  1;  
+        }else{
+        	//es el segundo hasta el fianl valor
+            if($field_grupo == $grupo){
+                $sw_crear  =  0;
+            }else{
+                $sw_crear  =  1;
+                $grupo     =  $field_grupo;
+            }
+        }
+        
+		$array_respuesta 		=	array(
+											"sw_crear" 		=> $sw_crear,
+											"grupo" 		=> $grupo,
+								        );
+
+        return $array_respuesta;
+
+	}
+
+
+	public function modificarmultidimensionalarray($toOrderArray, $field, $valor ,$orden_cen){
+
+	    foreach($toOrderArray as $key => $row) {
+	    	if($orden_cen == $row['orden_cen']){
+	    		$toOrderArray[$key][$field] = $valor;
+	    	}
+	    } 
+ 	    return $toOrderArray; 
+	}
+
+	public function ordermultidimensionalarray($toOrderArray, $field, $inverse){  
+	    $position = array();  
+	    $newRow = array();  
+	    foreach ($toOrderArray as $key => $row) {  
+	            $position[$key]  = $row[$field];  
+	            $newRow[$key] = $row;  
+	    }  
+	    if ($inverse) {  
+	        arsort($position);  
+	    }  
+	    else {  
+	        asort($position);  
+	    }  
+	    $returnArray = array();  
+	    foreach ($position as $key => $pos) {       
+	        $returnArray[] = $newRow[$key];  
+	    }  
+	    return $returnArray;  
+	}
+
+
+
+	public function lista_orden_cen_detalle($orden_cen_id){
+
+		$tipo_operacion = 'SEL';
+
+        $stmt 	= 	DB::connection('sqlsrv')->getPdo()->prepare('SET NOCOUNT ON;EXEC CMP.DETALLE_PRODUCTO_LISTAR 
+        			@IND_TIPO_OPERACION = ?,
+        			@COD_TABLA = ?');
+        $stmt->bindParam(1, $tipo_operacion ,PDO::PARAM_STR);                   
+        $stmt->bindParam(2, $orden_cen_id  ,PDO::PARAM_STR);                        			
+        $stmt->execute();
+
+        return $stmt;
+
+	}
+
 
 	public function lista_orden_cen($empresa_id,$cliente_id,$centro_id,$fecha_inicio,$fecha_fin){
 

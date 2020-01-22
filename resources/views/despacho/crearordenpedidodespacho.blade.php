@@ -49,10 +49,12 @@
 
                       <input type="hidden" name="opcion" id='opcion' value='{{$idopcion}}'>
                       <input type="hidden" name="buscar" id='buscar' value='1'>
+                      <input type="hidden" name="grupo" id='grupo' value='{{$grupo}}'>
+
                   </div>
 
                   <div class="col-xs-12">
-                    <div class='listafacturas listajax reporteajax'>
+                    <div class='lista_pedidos_despacho listajax reporteajax'>
                         <div class='ajaxvacio'>
                           Lista para agregar productos ...
 

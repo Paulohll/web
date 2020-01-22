@@ -68,10 +68,61 @@ $(document).ready(function(){
     });
 
 
+    $(".despacho").on('click','#agregarproductos', function() {
+
+        event.preventDefault();
+
+        var _token                  = $('#token').val();
+        var grupo                   = $('#grupo').val();
+
+        $('input[type=search]').val('').change();
+        $("#despacholocen").DataTable().search("").draw();
+        data_orden_cen = dataenviar();
+        if(data_orden_cen.length<=0){alerterrorajax('Seleccione por lo menos una fila'); return false;}
+
+        $('#modal-detalledocumento').niftyModal('hide');
+
+        $.ajax({
+
+            type    :   "POST",
+            url     :   carpeta+"/ajax-modal-agregar-orden-cen-pedido",
+            data    :   {
+                            _token                  : _token,
+                            data_orden_cen          : data_orden_cen,
+                            grupo                   : grupo,
+                        },    
+            success: function (data) {
+                cerrarcargando();
+                $('.lista_pedidos_despacho').html(data);
+            },
+            error: function (data) {
+                error500(data);
+            }
+        });
+
+
+
+    });
 });
 
 
 
+function dataenviar(){
+    var data = [];
+    $(".lista_tabla_oc tbody tr").each(function(){
+
+        check           = $(this).find('.input_asignar_oc');
+        ordencen_id     = $(this).attr('data_orden_id');
+
+        if($(check).is(':checked')){
+            data.push({
+                ordencen_id     : ordencen_id
+            });
+        }               
+
+    });
+    return data;
+}
 
 
 

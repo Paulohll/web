@@ -5,8 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use App\WEBRegla,App\WEBIlog,App\WEBMaestro,App\WEBPedido,App\User;
+use App\WEBRegla,App\WEBIlog,App\WEBMaestro,App\WEBPedido,App\User,App\WEBReglaCreditoCliente;
 use Mail;
+use PDO;
 
 class PedidoNotificacionVendedor extends Command
 {
@@ -66,12 +67,23 @@ class PedidoNotificacionVendedor extends Command
             $saldocli           =   DB::select('exec RPS.SALDO_TRAMO_CUENTA ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
             $vendedor           =   User::where('id','=',$item->usuario_crea)->first();
 
+            $limite_credito     =   WEBReglaCreditoCliente::where('cliente_id','=',$item->cliente_id)->first();
+
+            $tipo_operacion     =   'SEL';
+
+
+
+            $fecha_dia          =   date_format(date_create(date('Y-m-d')), 'Y-m-d');
+            $deuda_antigua      =   DB::select('exec WEB.DEUDA_MAS_ANTIGUA_CLIENTE ?,?', array($fecha_dia,$item->cliente_id));
+
 
             $array      =  Array(
-                'NP'        =>  $item,
-                'saldo'     =>  $saldocli,
-                'vendedor'  =>  $vendedor,
-                'detalle'   =>  $item->detallepedido
+                'NP'                =>  $item,
+                'saldo'             =>  $saldocli,
+                'vendedor'          =>  $vendedor,
+                'limite_credito'    =>  $limite_credito,
+                'detalle'           =>  $item->detallepedido,
+                'deuda_antigua'     =>  $deuda_antigua
             );
 
             $correorv           =   $vendedor->email;
@@ -82,6 +94,7 @@ class PedidoNotificacionVendedor extends Command
             {
 
                 $emailprincipal     = explode(",", $email->correoprincipal.','.$correorv);
+                //$emailprincipal     = explode(",", $email->correoprincipal);
         
                 $message->from($emailfrom->correoprincipal, 'Nuevo pedido registrado'.' '.$codigo);
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
-use App\WEBListaCliente;
+
 use View;
 use Session;
 use App\Biblioteca\Osiris;
@@ -15,10 +15,75 @@ use App\Biblioteca\Funcion;
 use PDO;
 use Mail;
 use PDF;
-use App\WEBOrdenDespacho;
+use App\WEBOrdenDespacho,App\CMPOrden,App\WEBListaCliente;
   
 class PedidoDespachoController extends Controller
 {
+
+
+	public function actionAjaxModalAgregarOrdenCenPedido(Request $request)
+	{
+
+		$data_orden_cen 					= 	$request['data_orden_cen'];
+		$grupo 								= 	(int)$request['grupo'];
+
+
+
+
+		$array_detalle_producto 			=	array();
+		foreach($data_orden_cen as $obj){
+
+		    $ordencen_id 					= 	$obj['ordencen_id'];
+		    $orden 							= 	CMPOrden::where('COD_ORDEN','=',$ordencen_id)->first();
+			$lista_detalle_ordencen			= 	$this->funciones->lista_orden_cen_detalle($ordencen_id);
+			$array_nuevo_producto 			=	array();
+			$grupo 							= 	$grupo + 1;
+			$rowspan 						= 	0;
+
+			while($row = $lista_detalle_ordencen->fetch())
+			{
+
+				$array_nuevo_producto 		=	array(
+													"empresa_cliente_id" 		=> $orden->COD_EMPR_CLIENTE,
+													"empresa_cliente_nombre" 	=> $orden->TXT_EMPR_CLIENTE,
+													"orden_id" 					=> $row['COD_TABLA'],
+													"orden_cen" 				=> $orden->NRO_ORDEN_CEN,
+													"fecha_pedido" 				=> $this->fin,
+													"fecha_entrega" 			=> $this->fin,
+										            "producto_id" 				=> $row['COD_PRODUCTO'],
+										            "nombre_producto" 			=> $row['TXT_NOMBRE_PRODUCTO'],
+										            "cantidad" 					=> $row['CAN_PRODUCTO'],
+										            "grupo" 					=> $grupo,
+										            "rowspan" 					=> '0',
+										        );
+
+				$rowspan 	= 	$rowspan + 1;
+				array_push($array_detalle_producto,$array_nuevo_producto);
+
+			}
+
+			// modificar un valor en array
+			$array_detalle_producto = $this->funciones->modificarmultidimensionalarray($array_detalle_producto,'rowspan',$rowspan,$orden->NRO_ORDEN_CEN);
+
+		}
+
+
+
+		// ordenar el array por grupo
+		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+
+
+
+		$funcion 	= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'funcion' 								=> $funcion,
+						 	'ajax'   		  						=> true,
+						 ]);
+
+	}
 
 	public function actionListarGeneracionPedido($idopcion)
 	{
@@ -29,7 +94,6 @@ class PedidoDespachoController extends Controller
 	    /******************************************************/
 	    $listaordendespacho 			= 	WEBOrdenDespacho::get();					
 		$funcion 						= 	$this;
-
 
 
 		return View::make('despacho/listaordendespacho',
@@ -98,10 +162,7 @@ class PedidoDespachoController extends Controller
 		}else{
                                    
 			$comboclientes				= 	$this->funciones->combo_clientes_cuenta();
-
-
-
-
+			$grupo						= 	0;
 
 			return View::make('despacho/crearordenpedidodespacho',
 							 [
@@ -109,6 +170,7 @@ class PedidoDespachoController extends Controller
 								'comboclientes' 	=> $comboclientes,						
 								'inicio'			=> $this->inicio,
 								'hoy'				=> $this->fin,
+							 	'grupo' 			=> $grupo,
 							 ]);
 		}
 	}
