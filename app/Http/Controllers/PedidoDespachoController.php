@@ -26,11 +26,11 @@ class PedidoDespachoController extends Controller
 
 		$data_orden_cen 					= 	$request['data_orden_cen'];
 		$grupo 								= 	(int)$request['grupo'];
-
-
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
 
 
 		$array_detalle_producto 			=	array();
+
 		foreach($data_orden_cen as $obj){
 
 		    $ordencen_id 					= 	$obj['ordencen_id'];
@@ -68,6 +68,14 @@ class PedidoDespachoController extends Controller
 
 		}
 
+		if(count($array_detalle_producto_request)>0){
+			foreach ($array_detalle_producto_request as $key => $item) {
+				array_push($array_detalle_producto,$item);
+			}
+		}
+
+		print_r($array_detalle_producto);
+		//print_r($array_detalle_producto_request);
 
 
 		// ordenar el array por grupo

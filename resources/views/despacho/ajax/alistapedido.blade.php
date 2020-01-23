@@ -1,3 +1,5 @@
+
+<input type="hidden" name="array_detalle_producto" id='array_detalle_producto' value='{{json_encode($array_detalle_producto)}}'>
 <div class="main-content container-fluid" style = "padding: 0px;">
   <div class="row">
     <div class="col-sm-12">
@@ -23,7 +25,6 @@
             <tbody>
               @php $grupo   =   ""; @endphp
               @foreach($array_detalle_producto as $index => $item)
-
 
                   @php 
                     $array_respuesta   =   $funcion->funciones->crearrolwpan($item['grupo'],$index,$grupo);

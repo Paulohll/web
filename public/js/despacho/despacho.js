@@ -74,6 +74,8 @@ $(document).ready(function(){
 
         var _token                  = $('#token').val();
         var grupo                   = $('#grupo').val();
+        var array_detalle_producto  = $('#array_detalle_producto').val();
+
 
         $('input[type=search]').val('').change();
         $("#despacholocen").DataTable().search("").draw();
@@ -90,6 +92,7 @@ $(document).ready(function(){
                             _token                  : _token,
                             data_orden_cen          : data_orden_cen,
                             grupo                   : grupo,
+                            array_detalle_producto  : array_detalle_producto,
                         },    
             success: function (data) {
                 cerrarcargando();

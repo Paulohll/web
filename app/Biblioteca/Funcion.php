@@ -14,7 +14,24 @@ use PDO;
 
 class Funcion{
 
+	public function llenar_array_productos($fecha_corte,$tipo_contrato,$cliente_id,$clase_con){
 
+		$array_nuevo_producto 		=	array(
+											"empresa_cliente_id" 		=> $orden->COD_EMPR_CLIENTE,
+											"empresa_cliente_nombre" 	=> $orden->TXT_EMPR_CLIENTE,
+											"orden_id" 					=> $row['COD_TABLA'],
+											"orden_cen" 				=> $orden->NRO_ORDEN_CEN,
+											"fecha_pedido" 				=> $this->fin,
+											"fecha_entrega" 			=> $this->fin,
+								            "producto_id" 				=> $row['COD_PRODUCTO'],
+								            "nombre_producto" 			=> $row['TXT_NOMBRE_PRODUCTO'],
+								            "cantidad" 					=> $row['CAN_PRODUCTO'],
+								            "grupo" 					=> $grupo,
+								            "grupo_orden" 				=> '0',
+								            "grupo_movil" 				=> $grupo,
+								        );
+
+	}
 
 
 	public function lista_saldo_cuenta_documento($fecha_corte,$tipo_contrato,$cliente_id,$clase_con){
