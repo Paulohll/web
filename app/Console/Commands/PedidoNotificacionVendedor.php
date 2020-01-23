@@ -70,9 +70,6 @@ class PedidoNotificacionVendedor extends Command
             $limite_credito     =   WEBReglaCreditoCliente::where('cliente_id','=',$item->cliente_id)->first();
 
             $tipo_operacion     =   'SEL';
-
-
-
             $fecha_dia          =   date_format(date_create(date('Y-m-d')), 'Y-m-d');
             $deuda_antigua      =   DB::select('exec WEB.DEUDA_MAS_ANTIGUA_CLIENTE ?,?', array($fecha_dia,$item->cliente_id));
 

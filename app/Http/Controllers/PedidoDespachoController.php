@@ -54,7 +54,8 @@ class PedidoDespachoController extends Controller
 										            "nombre_producto" 			=> $row['TXT_NOMBRE_PRODUCTO'],
 										            "cantidad" 					=> $row['CAN_PRODUCTO'],
 										            "grupo" 					=> $grupo,
-										            "rowspan" 					=> '0',
+										            "grupo_orden" 				=> '0',
+										            "grupo_movil" 				=> $grupo,
 										        );
 
 				$rowspan 	= 	$rowspan + 1;
@@ -63,7 +64,7 @@ class PedidoDespachoController extends Controller
 			}
 
 			// modificar un valor en array
-			$array_detalle_producto = $this->funciones->modificarmultidimensionalarray($array_detalle_producto,'rowspan',$rowspan,$orden->NRO_ORDEN_CEN);
+			$array_detalle_producto = $this->funciones->modificarmultidimensionalarray($array_detalle_producto,'grupo_orden',$rowspan,$orden->NRO_ORDEN_CEN);
 
 		}
 

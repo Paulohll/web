@@ -94,6 +94,8 @@
                              <td style="font-size:13px;color:#191970">{{$direccion->NOM_DIRECCION}} - {{$direccion->distrito->NOM_CATEGORIA}}</td>
                              </tr>
                              </tbody>
+
+
                              </table>
                              <table style=  "font-family:Calibri,Candara,Segoe,Optima,Arial,sans-serif">
                              <tbody>
@@ -103,6 +105,56 @@
                              </tr>
                              </tbody>
                              </table>
+                             
+                             <table style=  "font-family:Calibri,Candara,Segoe,Optima,Arial,sans-serif">
+                             <tbody>
+                             <tr>    
+                             <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Limite de credito:  </td>
+                             <td style="font-size:13px;color:#191970"> 
+                                @if(count($limite_credito)>0) 
+                                    {{number_format($limite_credito->canlimitecredito, 2, '.', ',')}}
+                                @else
+                                    -    
+                                @endif
+                             </td>
+                             </tr>
+                             </tbody>
+                             </table>
+
+
+                             <table style=  "margin-top:5px;font-family:Calibri,Candara,Segoe,Optima,Arial,sans-serif">
+                             <tbody>
+                             <tr>  
+                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold;text-align: center;" Colspan ='2'>  Venta mas antigua por pagar:  </td>
+                             </tr>
+                             <tr>  
+                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Documento:  </td>
+                                 <td style="font-size:13px;color:#191970">
+                                    @foreach($deuda_antigua as $deu)
+                                        {{$deu->NroDocumento}}
+                                    @endforeach
+                                 </td>
+                             </tr>
+                             <tr>  
+                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Días transcurrido:  </td>
+                                 <td style="font-size:13px;color:#191970">
+                                    @foreach($deuda_antigua as $deu)
+                                        {{$deu->diasTranscurridos}}
+                                    @endforeach
+                                 </td>
+                             </tr>
+                             <tr>  
+                                 <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Saldo a pagar:  </td>
+                                 <td style="font-size:13px;color:#191970">
+                                    @foreach($deuda_antigua as $deu)
+                                        {{number_format($deu->CAN_SALDO, 2, '.', ',')}}
+                                    @endforeach
+                                 </td>
+                             </tr>
+                             </tbody>
+                             </table>
+
+
                              
                              </td>
                              </tr>
