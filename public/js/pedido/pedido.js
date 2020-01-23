@@ -299,6 +299,36 @@ $(document).ready(function(){
     });
 
 
+    $(".listapedidoosiris").on('click','.btn-deuda-cliente', function() {
+
+
+        var _token              = $('#token').val();
+        var pedido_id           = $(this).attr('data-id');
+
+        debugger;
+
+        $.ajax({
+            
+            type    :   "POST",
+            url     :   carpeta+"/ajax-modal-deuda-cliente",
+            data    :   {
+                            _token                  : _token,
+                            pedido_id               : pedido_id
+                        },    
+            success: function (data) {
+                debugger;
+                $('.modal-detalle-deuda-pedido').html(data);
+                $('#detalle-deuda-pedido').niftyModal();
+            },
+            error: function (data) {
+                error500(data);
+            }
+        });
+
+        
+    });
+
+
 
 
     /*************** TOMA PEDIDO **************/

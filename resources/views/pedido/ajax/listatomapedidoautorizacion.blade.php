@@ -86,6 +86,11 @@
             <span class="mdi mdi-eye  md-trigger"></span>
           </span>
 
+          <span class="badge badge-danger btn-eyes btn-deuda-cliente" 
+                data-id="{{Hashids::encode(substr($item->id, -8))}}">
+            <span class="mdi mdi-money-off  md-trigger"></span>
+          </span>
+
 
         </td>
       </tr>                    

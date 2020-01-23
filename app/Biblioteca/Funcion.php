@@ -15,6 +15,30 @@ use PDO;
 class Funcion{
 
 
+
+
+	public function lista_saldo_cuenta_documento($fecha_corte,$tipo_contrato,$cliente_id,$clase_con){
+
+		$empresa_id = Session::get('empresas')->COD_EMPR;
+
+        $stmt 	= 	DB::connection('sqlsrv')->getPdo()->prepare('SET NOCOUNT ON;EXEC RPS.CMP_SALDO_CUENTA_DOCUMENTO 
+        			@COD_EMPR = ?,
+        			@FEC_CORTE = ?,
+        			@TIPO = ?,
+        			@CLIENTE = ?,
+        			@CLASECON = ?'
+        			);
+        $stmt->bindParam(1, $empresa_id ,PDO::PARAM_STR);                   
+        $stmt->bindParam(2, $fecha_corte  ,PDO::PARAM_STR);
+        $stmt->bindParam(3, $tipo_contrato ,PDO::PARAM_STR);                   
+        $stmt->bindParam(4, $cliente_id  ,PDO::PARAM_STR);                 
+        $stmt->bindParam(5, $clase_con  ,PDO::PARAM_STR); 
+        $stmt->execute();
+
+        return $stmt;
+
+	}
+
 	public function crearrolwpan($field_grupo, $index, $grupo){
 
 		$sw_crear  =  0;
@@ -265,6 +289,12 @@ class Funcion{
 	}
 
 
+	public function data_documento_ctbl($documento_id) {
+
+		$documento 				= 	CMPDocumentoCtble::where('COD_DOCUMENTO_CTBLE','=',$documento_id)->first();
+        return $documento;
+
+	}
 
 
 	public function data_documento($documento_id) {

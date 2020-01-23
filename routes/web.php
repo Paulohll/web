@@ -119,6 +119,8 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/no-autorizar-pedido/{idopcion}', 'OrdenPedidoController@actionNoAutorizarPedido');
 	Route::any('/ajax-guardar-cantidad-producto-pedido', 'OrdenPedidoController@actionAjaxGuardarCantidadProductoPedido');
 	Route::any('/ajax-guardar-precio-producto-pedido', 'OrdenPedidoController@actionAjaxGuardarPrecioProductoPedido');
+	Route::any('/ajax-modal-deuda-cliente', 'OrdenPedidoController@actionAjaxDeudaCliente');
+
 
 	/************************************** GENERALES ********************************************/
 	Route::any('/ajax-canal-responsable', 'GeneralAjaxController@actionCanalResponsable');

@@ -102,7 +102,7 @@
     </div>
 
     @include('pedido.modal.detallepedidoautorizacion')
-
+    @include('pedido.modal.deudacliente')
 
   </div>
 

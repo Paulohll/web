@@ -20,6 +20,22 @@ use PDF;
 class OrdenPedidoController extends Controller
 {
 
+	public function actionAjaxDeudaCliente(Request $request)
+	{
+		$pedido_id 					= 	$request['pedido_id'];
+		$pedido_id 					= 	$this->funciones->desencriptar_id('1CIX-'.$pedido_id,8);
+		$pedido 					=   WEBPedido::where('id','=',$pedido_id)->first();
+		$lista_deuda_cliente		= 	$this->funciones->lista_saldo_cuenta_documento($this->fechaactual,'TCO0000000000068',$pedido->cliente_id,'CON');
+		$funcion 					= 	$this;			
+
+		return View::make('pedido/ajax/modaldeudacliente',
+						 [
+							 'pedido_id'   				=> $pedido_id,
+							 'pedido'   				=> $pedido,
+							 'lista_deuda_cliente'   	=> $lista_deuda_cliente,
+							 'funcion'   				=> $funcion,
+						 ]);
+	}
 
 	public function actionAjaxDetallePedidoRechazar(Request $request)
 	{

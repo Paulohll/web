@@ -1062,6 +1062,14 @@ color: #ea4335;
     margin-left: -92px !important;
 }
 
+.modal-contenido .modal-header{
+  padding: 15px !important;
+}
+.modal-contenido .modal-header .modal-title{
+  font-size: 1.15em !important;
+  font-style: italic;
+}
+
 
 .modal-detalle-pedido .modal-header{
   padding: 15px !important;
