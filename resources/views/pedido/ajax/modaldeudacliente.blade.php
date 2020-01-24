@@ -17,7 +17,7 @@
 </div>
 <div class="modal-body">
   <div class="scroll_text">
-  	<table class="table">
+  	<table class="table" style="font-size: 0.85em;">
 	    <thead>
 	      <tr>
 	        <th>Documento</th>
