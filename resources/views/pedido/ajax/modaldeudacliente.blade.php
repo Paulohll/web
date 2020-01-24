@@ -5,6 +5,13 @@
   <h5 class="modal-title"> Dirección entrega : {{$pedido->direccionentrega->NOM_DIRECCION}}</h5>
   <h5 class="modal-title"> Tipo de Pago : {{$funcion->funciones->data_categoria($pedido->tipopago_id)->NOM_CATEGORIA}}</h5>
   <h5 class="modal-title"> Glosa : {{$pedido->glosa}}</h5>
+  <h5 class="modal-title"> Limite de credito : 
+    @if(count($limite_credito)>0) 
+        {{number_format($limite_credito->canlimitecredito, 2, '.', ',')}}
+    @else
+        -    
+    @endif
+  </h5>
   <input type="hidden" name="id_pedido_modal" id="id_pedido_modal" value="{{$pedido_id}}">
 
 </div>

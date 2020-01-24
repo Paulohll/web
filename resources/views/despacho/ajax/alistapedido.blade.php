@@ -1,5 +1,9 @@
 
 <input type="hidden" name="array_detalle_producto" id='array_detalle_producto' value='{{json_encode($array_detalle_producto)}}'>
+<input type="hidden" name="grupo" id='grupo' value='{{$grupo}}'>
+<input type="hidden" name="correlativo" id='correlativo' value='{{$correlativo}}'>
+
+
 <div class="main-content container-fluid" style = "padding: 0px;">
   <div class="row">
     <div class="col-sm-12">
@@ -9,9 +13,10 @@
           </div>
         </div>
         <div class="panel-body">
-          <table class="table table-hover" style='font-size: 0.85em;'>
+          <table class="table table-hover table-pedidos-despachos" style='font-size: 0.85em;'>
             <thead>
               <tr>
+                <th class='center'>X</th>
                 <th>Movil</th>
                 <th>Fechas</th>
                 <th>Cliente</th>
@@ -20,6 +25,7 @@
                 <th>Palets</th>
                 <th>Cantidad (sacos)</th>
                 <th>Palets / Kilos</th>
+                <th>Sel</th>
               </tr>
             </thead>
             <tbody>
@@ -34,7 +40,13 @@
 
                   <tr>
 
-                    <td>{{$index + 1}}</td>
+                    <td class='center'>
+                      <span class="badge badge-danger eliminar-producto-despacho">
+                        <span class="mdi mdi-close" style='color: #fff;'></span>
+                      </span>
+                    </td>
+
+                    <td>{{$item['correlativo']}}</td>
                     @if($sw_crear == 1) 
                       <td class="cell-detail" rowspan = "{{$item['grupo_orden']}}">
                         <span><b>Pedido</b> : {{$item['fecha_pedido']}}</span>
@@ -47,13 +59,27 @@
                       <span><b>Orden Cen</b> : {{$item['orden_cen']}}</span>
                     </td> 
                     @endif
-                    <td>{{$item['nombre_producto']}} {{$item['grupo']}} {{$item['grupo_orden']}}</td>
+                    <td>{{$item['nombre_producto']}} </td>
                     <td>{{number_format($item['cantidad'], 2, '.', ',')}}</td>
                     <td>{{$item['cantidad']}}</td>
                     <td>{{$item['cantidad']}}</td>
 
                     <td></td>
+                    <td>
+                      <div class="text-center be-checkbox be-checkbox-sm has-primary">
+                        <input  
+                          type="checkbox"
+                          class="{{$item['correlativo']}} input_asignar_oc"
+                          id="{{$item['correlativo']}}" >
 
+                        <label  for="{{$item['correlativo']}}"
+                              data-atr = "ver"
+                              class = "checkbox checkbox_asignar_oc"                    
+                              name="{{$item['correlativo']}}"
+                        ></label>
+                      </div>
+
+                    </td>
                   </tr>
               @endforeach
             </tbody>

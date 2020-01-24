@@ -75,12 +75,15 @@ $(document).ready(function(){
         var _token                  = $('#token').val();
         var grupo                   = $('#grupo').val();
         var array_detalle_producto  = $('#array_detalle_producto').val();
-
+        var correlativo             = $('#correlativo').val();
 
         $('input[type=search]').val('').change();
         $("#despacholocen").DataTable().search("").draw();
         data_orden_cen = dataenviar();
         if(data_orden_cen.length<=0){alerterrorajax('Seleccione por lo menos una fila'); return false;}
+
+
+        debugger;
 
         $('#modal-detalledocumento').niftyModal('hide');
 
@@ -92,6 +95,7 @@ $(document).ready(function(){
                             _token                  : _token,
                             data_orden_cen          : data_orden_cen,
                             grupo                   : grupo,
+                            correlativo             : correlativo,
                             array_detalle_producto  : array_detalle_producto,
                         },    
             success: function (data) {

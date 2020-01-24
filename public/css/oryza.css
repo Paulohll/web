@@ -1,3 +1,11 @@
+.table-pedidos-despachos td{
+  padding: 10px 10px !important;
+}
+
+.eliminar-producto-despacho{
+  cursor: pointer;
+}
+
 #despacholocen tbody tr,#despacholop tbody tr{
   cursor: pointer;
 }

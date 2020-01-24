@@ -7,7 +7,7 @@ use App\WEBRolOpcion,App\WEBListaCliente,App\STDTipoDocumento,App\WEBPrecioProdu
 use App\WEBRegla,App\WEBUserEmpresaCentro,App\WEBPrecioProductoContrato,App\CMPCategoria,App\WEBPedido;
 use App\WEBPrecioProductoContratoHistorial,App\WEBPrecioProductoHistorial,App\CMPOrden,App\CMPDetalleProducto,App\WEBDetallePedido;
 use App\STDEmpresa,App\ALMCentro,App\STDEmpresaDireccion,App\CMPDocumentoCtble,App\WEBDocDoc;
-use App\WEBDetalleDocumentoAsociados;
+use App\WEBDetalleDocumentoAsociados,App\WEBReglaCreditoCliente;
 use App\User;
 use Keygen;
 use PDO;
@@ -38,7 +38,7 @@ class Funcion{
 
 		$empresa_id = Session::get('empresas')->COD_EMPR;
 
-        $stmt 	= 	DB::connection('sqlsrv')->getPdo()->prepare('SET NOCOUNT ON;EXEC RPS.CMP_SALDO_CUENTA_DOCUMENTO 
+        $stmt 	= 	DB::connection('sqlsrv')->getPdo()->prepare('SET NOCOUNT ON;EXEC WEB.CMP_SALDO_CUENTA_DOCUMENTO 
         			@COD_EMPR = ?,
         			@FEC_CORTE = ?,
         			@TIPO = ?,
@@ -486,6 +486,13 @@ class Funcion{
 
 		return $response;
 
+
+	}
+
+	public function data_regla_limite_credito($cliente_id) {
+
+        $limite_credito     =   WEBReglaCreditoCliente::where('cliente_id','=',$cliente_id)->first();
+        return 	$limite_credito;		
 
 	}
 

@@ -26,6 +26,8 @@ class PedidoDespachoController extends Controller
 
 		$data_orden_cen 					= 	$request['data_orden_cen'];
 		$grupo 								= 	(int)$request['grupo'];
+		$correlativo 						= 	(int)$request['correlativo'];
+
 		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
 
 
@@ -43,6 +45,7 @@ class PedidoDespachoController extends Controller
 			while($row = $lista_detalle_ordencen->fetch())
 			{
 
+				$correlativo 				= 	$correlativo + 1;
 				$array_nuevo_producto 		=	array(
 													"empresa_cliente_id" 		=> $orden->COD_EMPR_CLIENTE,
 													"empresa_cliente_nombre" 	=> $orden->TXT_EMPR_CLIENTE,
@@ -56,6 +59,7 @@ class PedidoDespachoController extends Controller
 										            "grupo" 					=> $grupo,
 										            "grupo_orden" 				=> '0',
 										            "grupo_movil" 				=> $grupo,
+										            "correlativo" 				=> $correlativo
 										        );
 
 				$rowspan 	= 	$rowspan + 1;
@@ -74,10 +78,6 @@ class PedidoDespachoController extends Controller
 			}
 		}
 
-		print_r($array_detalle_producto);
-		//print_r($array_detalle_producto_request);
-
-
 		// ordenar el array por grupo
 		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
 
@@ -88,6 +88,8 @@ class PedidoDespachoController extends Controller
 		return View::make('despacho/ajax/alistapedido',
 						 [
 						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
 						 	'funcion' 								=> $funcion,
 						 	'ajax'   		  						=> true,
 						 ]);
@@ -172,6 +174,8 @@ class PedidoDespachoController extends Controller
                                    
 			$comboclientes				= 	$this->funciones->combo_clientes_cuenta();
 			$grupo						= 	0;
+			$correlativo				= 	0;
+
 
 			return View::make('despacho/crearordenpedidodespacho',
 							 [
@@ -180,6 +184,7 @@ class PedidoDespachoController extends Controller
 								'inicio'			=> $this->inicio,
 								'hoy'				=> $this->fin,
 							 	'grupo' 			=> $grupo,
+							 	'correlativo' 		=> $correlativo,
 							 ]);
 		}
 	}

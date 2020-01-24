@@ -27,6 +27,8 @@ class OrdenPedidoController extends Controller
 		$pedido 					=   WEBPedido::where('id','=',$pedido_id)->first();
 		$lista_deuda_cliente		= 	$this->funciones->lista_saldo_cuenta_documento($this->fechaactual,'TCO0000000000068',$pedido->cliente_id,'CON');
 		$funcion 					= 	$this;			
+		$limite_credito				= 	$this->funciones->data_regla_limite_credito($pedido->cliente_id);
+
 
 		return View::make('pedido/ajax/modaldeudacliente',
 						 [
@@ -34,6 +36,7 @@ class OrdenPedidoController extends Controller
 							 'pedido'   				=> $pedido,
 							 'lista_deuda_cliente'   	=> $lista_deuda_cliente,
 							 'funcion'   				=> $funcion,
+							 'limite_credito'   		=> $limite_credito,
 						 ]);
 	}
 

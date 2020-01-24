@@ -49,7 +49,6 @@
 
                       <input type="hidden" name="opcion" id='opcion' value='{{$idopcion}}'>
                       <input type="hidden" name="buscar" id='buscar' value='1'>
-                      <input type="hidden" name="grupo" id='grupo' value='{{$grupo}}'>
 
                   </div>
 
@@ -57,7 +56,9 @@
                     <div class='lista_pedidos_despacho listajax reporteajax'>
 
                         <input type="hidden" name="array_detalle_producto" id='array_detalle_producto' value='[]'>
-
+                        <input type="hidden" name="grupo" id='grupo' value='{{$grupo}}'>
+                        <input type="hidden" name="correlativo" id='correlativo' value='{{$correlativo}}'>
+                        
                         <div class='ajaxvacio'>
                           Lista para agregar productos ...
 
