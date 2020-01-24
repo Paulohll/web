@@ -63,15 +63,19 @@ class PedidoNotificacionAutorizar extends Command
             $vendedor           =   User::where('id','=',$item->usuario_crea)->first();
             $correorv           =   $vendedor->email;
 
+            $saldocli           =   DB::select('exec RPS.SALDO_TRAMO_CUENTA ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
+
 
             $limite_credito     =   WEBReglaCreditoCliente::where('cliente_id','=',$item->cliente_id)->first();
             $tipo_operacion     =   'SEL';
             $fecha_dia          =   date_format(date_create(date('Y-m-d')), 'Y-m-d');
-            $deuda_antigua      =   DB::select('exec WEB.DEUDA_MAS_ANTIGUA_CLIENTE ?,?', array($fecha_dia,$item->cliente_id));
+            //$deuda_antigua      =   DB::select('exec WEB.DEUDA_MAS_ANTIGUA_CLIENTE ?,?', array($fecha_dia,$item->cliente_id));
+            $deuda_antigua      =   DB::select('exec WEB.DEUDA_MAS_ANTIGUA_CLIENTE ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
 
 
             $array              =   Array(
                 'NP'                =>  $item,
+                'saldo'             =>  $saldocli,
                 'vendedor'          =>  $vendedor,
                 'detalle'           =>  $item->detallepedido,
                 'direccion'         =>  $direccion,

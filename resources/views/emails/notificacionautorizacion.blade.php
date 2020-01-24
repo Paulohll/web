@@ -106,6 +106,23 @@
                              </tbody>
                              </table>
                              
+
+                             <table style=  "font-family:Calibri,Candara,Segoe,Optima,Arial,sans-serif">
+                             <tbody>
+                             <tr>  
+                             <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Deuda:  </td>
+                             <td style="font-size:13px;color:#191970"> 
+                                <?php $sum = 0; ?>
+                                    @foreach($saldo as $it)
+                                <?php $sum += $it->SALCON; ?>
+                                    @endforeach
+
+                                {{number_format($sum, 2, '.', ',')}}
+                             </td>
+                             </tr>
+                             </tbody>
+                             </table>
+                             
                              <table style=  "font-family:Calibri,Candara,Segoe,Optima,Arial,sans-serif">
                              <tbody>
                              <tr>    
