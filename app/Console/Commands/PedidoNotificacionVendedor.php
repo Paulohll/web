@@ -64,7 +64,7 @@ class PedidoNotificacionVendedor extends Command
             $email              =   WEBMaestro::where('codigoatributo','=','0001')->where('codigoestado','=','00005')->first();
 
                 
-            $saldocli           =   DB::select('exec RPS.SALDO_TRAMO_CUENTA ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
+            $saldocli           =   DB::select('exec WEB.SALDO_TRAMO_CUENTA ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
             $vendedor           =   User::where('id','=',$item->usuario_crea)->first();
 
             $limite_credito     =   WEBReglaCreditoCliente::where('cliente_id','=',$item->cliente_id)->first();

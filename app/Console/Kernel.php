@@ -9,7 +9,7 @@ use App\Console\Commands\AlertaDesactivarReglas;
 use App\Console\Commands\PedidoNotificacionVendedor;
 use App\Console\Commands\PedidoNotificacionAutorizar;
 use App\Console\Commands\PedidoNotificacionDespacho;
-
+use App\Console\Commands\CampanaUtiles;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -28,7 +28,9 @@ class Kernel extends ConsoleKernel
         ServicioDelivery::class,
         PedidoNotificacionVendedor::class,
         PedidoNotificacionAutorizar::class,
-        PedidoNotificacionDespacho::class
+        PedidoNotificacionDespacho::class,
+        CampanaUtiles::class
+
     ];
 
     /**
@@ -39,6 +41,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
+        //$schedule->command('campana:utiles')->dailyAt('09:30');
 
 
         //$schedule->command('servicio:delivery')->dailyAt('14:00');

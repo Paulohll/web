@@ -63,7 +63,7 @@ class PedidoNotificacionAutorizar extends Command
             $vendedor           =   User::where('id','=',$item->usuario_crea)->first();
             $correorv           =   $vendedor->email;
 
-            $saldocli           =   DB::select('exec RPS.SALDO_TRAMO_CUENTA ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
+            $saldocli           =   DB::select('exec WEB.SALDO_TRAMO_CUENTA ?,?,?,?,?,?,?,?,?,?,?', array('','','','',date("Y-m-d"),$item->cliente_id,'TCO0000000000068','','','',''));
 
 
             $limite_credito     =   WEBReglaCreditoCliente::where('cliente_id','=',$item->cliente_id)->first();
