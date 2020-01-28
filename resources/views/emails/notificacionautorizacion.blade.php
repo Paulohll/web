@@ -101,7 +101,7 @@
                              <tbody>
                              <tr>    
                              <td width=  "100"  style=  "font-size:13px;font-weight:bold">  Valorizado:  </td>
-                             <td style="font-size:13px;color:#191970"> {{$NP->total}} </td>
+                             <td style="font-size:13px;color:#191970"> {{number_format($NP->total, 2, '.', ',')}}</td>
                              </tr>
                              </tbody>
                              </table>
