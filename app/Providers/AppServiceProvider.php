@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
 
         Schema::defaultStringLength(191);    
         View::share('capeta', '/web');  
-        View::share('version', '226');  
+        View::share('version', '234');  
 
         Validator::extend('unico', function($attribute, $value, $parameters , $validator){
 

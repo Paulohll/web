@@ -37,7 +37,9 @@ class UserController extends Controller
 			$clave   	 				 = strtoupper($request['password']);
 			$local_id  	 				 = $request['local_id'];
 
-			$tusuario    				 = User::whereRaw('UPPER(name)=?',[$usuario])->first();
+			$tusuario    				 = 	User::whereRaw('UPPER(name)=?',[$usuario])
+											//->where('activo','=',1)
+											->first();
 
 			if(count($tusuario)>0)
 			{

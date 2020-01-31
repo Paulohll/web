@@ -1,5 +1,9 @@
+.cursor{
+  cursor: pointer;
+}
+
 .table-pedidos-despachos td{
-  padding: 10px 10px !important;
+  padding: 3px 10px !important;
 }
 
 .eliminar-producto-despacho{

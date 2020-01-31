@@ -21,6 +21,146 @@ class PedidoDespachoController extends Controller
 {
 
 
+	public function actionAjaxPedidoEliminarFila(Request $request)
+	{
+
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$array_detalle_producto 			=	array();
+		$grupo 								= 	(int)$request['grupo'];
+		$correlativo 						= 	(int)$request['correlativo'];
+		$fila 								= 	$request['fila'];
+
+
+		//eliminar la fila del array
+		foreach ($array_detalle_producto_request as $key => $item) {
+            if((int)$item['correlativo'] == $fila) {
+                unset($array_detalle_producto_request[$key]);
+            }
+		}
+
+
+	    //agregar a un array nuevo para listar en la vista
+		foreach ($array_detalle_producto_request as $key => $item) {
+			array_push($array_detalle_producto,$item);
+		}
+
+		// ordenar el array por grupo
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$funcion 				= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'ajax'   		  						=> true,
+						 ]);
+
+
+
+	}
+
+
+
+
+
+	public function actionAjaxPedidoCrearMovil(Request $request)
+	{
+
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$data_producto_pedido 				= 	$request['data_producto_pedido'];
+		$array_detalle_producto 			=	array();
+		$grupo 								= 	(int)$request['grupo'];
+		$correlativo 						= 	(int)$request['correlativo'];
+
+
+		//el mayor valor numero de movil
+		$grupo_mobil_mayor 					=	0;
+		foreach ($array_detalle_producto_request as $key => $item) {
+            if((int)$item['grupo_movil'] > $grupo_mobil_mayor) {
+                $grupo_mobil_mayor = (int)$item['grupo_movil'];
+            }
+		}
+
+
+		//agregar el numero de movil y agrupar 	 
+		foreach($array_detalle_producto_request as $key => $row) {
+			$encontro = array_search($row['correlativo'], array_column($data_producto_pedido, 'correlativo'));
+		    if (!is_bool($encontro)){
+		    	$array_detalle_producto_request[$key]['grupo_movil'] = $grupo_mobil_mayor + 1;
+		    }
+	    } 
+
+
+	    //agregar a un array nuevo para listar en la vista
+		foreach ($array_detalle_producto_request as $key => $item) {
+			array_push($array_detalle_producto,$item);
+		}
+
+
+		// ordenar el array por grupo movil
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
+		$nuevo_grupo 		= 	0;
+		$i 			 		=  	0;
+		$sw 				= 	0;
+		$grupo_diferente 	= 	0;
+		//inicializar los grupos moviles 
+		foreach($array_detalle_producto as $key => $row) {
+
+            if((int)$row['grupo_movil'] > 0) {
+
+            	$grupo_movil_nro    	= 	(int)$row['grupo_movil'];
+		    	if($sw == 0){
+		    		$grupo_diferente 	= 	$grupo_movil_nro;
+		    		$sw 				= 	1;
+		    	}
+
+		    	if($grupo_movil_nro <> $grupo_diferente){
+		    		$grupo_diferente 	=	$grupo_movil_nro;
+		    		$i 					= 	$i + 1;
+		    	}
+             	$nuevo_grupo 			= 	$grupo_movil_nro - ($grupo_movil_nro-1) + $i;
+		    	$array_detalle_producto[$key]['grupo_movil'] = $nuevo_grupo;
+            }
+	    }
+
+
+	    //agregar la cantidad de grupo movil correcto
+	    $count_grupo = 0;
+		foreach($array_detalle_producto as $key => $row) {
+			$grupo_movil_nro    	= 	(int)$row['grupo_movil'];
+            if($grupo_movil_nro > 0) {
+				$count_grupo 										= 	$this->funciones->countgrupomovil($array_detalle_producto,'grupo_movil',$grupo_movil_nro);
+				$array_detalle_producto[$key]['grupo_orden_movil'] 	= 	$count_grupo;
+            }
+	    }
+
+
+
+		// ordenar el array por grupo
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$funcion 				= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'ajax'   		  						=> true,
+						 ]);
+
+
+
+	}
+
+
+
+
+
 	public function actionAjaxModalAgregarOrdenCenPedido(Request $request)
 	{
 
@@ -58,7 +198,8 @@ class PedidoDespachoController extends Controller
 										            "cantidad" 					=> $row['CAN_PRODUCTO'],
 										            "grupo" 					=> $grupo,
 										            "grupo_orden" 				=> '0',
-										            "grupo_movil" 				=> $grupo,
+										            "grupo_movil" 				=> '0',
+										            "grupo_orden_movil" 		=> '0',
 										            "correlativo" 				=> $correlativo
 										        );
 
@@ -80,9 +221,6 @@ class PedidoDespachoController extends Controller
 
 		// ordenar el array por grupo
 		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
-
-
-
 		$funcion 	= 	$this;
 
 		return View::make('despacho/ajax/alistapedido',

@@ -31,7 +31,7 @@ class Controller extends BaseController
 
 		//fecha actual 30 dias
 		$fechatreinta = date('Y-m-j');
-		$nuevafecha = strtotime ( '-60 day' , strtotime($fechatreinta));
+		$nuevafecha = strtotime ( '-90 day' , strtotime($fechatreinta));
 		$nuevafecha = date ('Y-m-j' , $nuevafecha);
 
 

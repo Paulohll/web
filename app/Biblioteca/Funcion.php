@@ -82,6 +82,16 @@ class Funcion{
 
 	}
 
+	public function countgrupomovil($toOrderArray, $field, $grupo){
+		$count 	=	0;
+	    foreach($toOrderArray as $key => $row) {
+	    	if($grupo == $row[$field]){
+	    		$count 	= 	$count + 1;
+	    	}
+	    } 
+ 	    return $count; 
+	}
+
 
 	public function modificarmultidimensionalarray($toOrderArray, $field, $valor ,$orden_cen){
 
