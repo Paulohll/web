@@ -607,7 +607,7 @@ class OrdenPedidoController extends Controller
 
 	    }else{
 
-		    $fechainicio  		= 	$this->inicio;
+		    $fechainicio  		= 	$this->fecha_menos_quince;
 		    $fechafin  			= 	$this->fin;
 
 	    }

@@ -35,8 +35,16 @@ class Controller extends BaseController
 		$nuevafecha = date ('Y-m-j' , $nuevafecha);
 
 
-		$this->fecha_menos_treinta_dias = date_format(date_create($nuevafecha), 'd-m-Y');
+		//fecha actual 30 dias
+		$fechaquince = date('Y-m-j');
+		$nuevafechaq = strtotime ( '-15 day' , strtotime($fechaquince));
+		$nuevafechaq = date ('Y-m-j' , $nuevafechaq);
 
+
+
+
+		$this->fecha_menos_quince 		= date_format(date_create($nuevafechaq), 'd-m-Y');
+		$this->fecha_menos_treinta_dias = date_format(date_create($nuevafecha), 'd-m-Y');
 		$this->inicio 					= date_format(date_create($fecha->format('Y-m-d')), 'd-m-Y');
 		$this->fin 						= date_format(date_create(date('Y-m-d')), 'd-m-Y');
 		$this->messiguiente 			= date_format(date_create($fechames->format('Y-m-d')), 'd-m-Y');
