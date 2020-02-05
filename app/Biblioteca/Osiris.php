@@ -56,7 +56,17 @@ class Osiris{
 
 
                 $fecha_venta                                    =       date_format(date_create(date('d-m-Y')), 'Y-m-d');
-                $fecha_ilimitada                                =       date_format(date_create('1901-01-01'), 'Y-m-d');;
+
+                //fecha gracia y pago
+                $tipo_de_pago                                   =       CMPCategoria::where('COD_CATEGORIA','=',$pedido->tipopago_id)->first();
+                $fechagp                                        =       date('Y-m-j');
+                $nuevagp                                        =       strtotime ( '+'.$tipo_de_pago->COD_CTBLE.' day' , strtotime($fechagp));
+                $nuevagp                                        =       date ('Y-m-j' , $nuevagp);
+                $nuevagp                                        =       date_format(date_create($nuevagp), 'Y-m-d');
+
+
+
+                $fecha_ilimitada                                =       date_format(date_create('1901-01-01'), 'Y-m-d');
                 $ind_material_servicio                          =       'M';
                 $cod_categoria_tipo_orden                       =       'TOR0000000000006';
                 $txt_categoria_tipo_orden                       =       'VENTAS COMERCIAL';
@@ -105,12 +115,12 @@ class Osiris{
                 $stmt->bindParam(17, $fecha_venta ,PDO::PARAM_STR);                             //@FEC_ENTREGA='2019-06-12',
                 $stmt->bindParam(18, $fecha_ilimitada ,PDO::PARAM_STR);                         //@FEC_ENTREGA_2='1901-01-01',
                 $stmt->bindParam(19, $fecha_ilimitada ,PDO::PARAM_STR);                         //@FEC_ENTREGA_3='1901-01-01',
-                $stmt->bindParam(20, $fecha_venta ,PDO::PARAM_STR);                             //@FEC_PAGO='2019-06-12',
+                $stmt->bindParam(20, $nuevagp ,PDO::PARAM_STR);                                 //@FEC_PAGO='2019-06-12',
 
                 $stmt->bindParam(21, $fecha_venta ,PDO::PARAM_STR);                             //@FEC_NOTA_PEDIDO='2019-06-12',
                 $stmt->bindParam(22, $fecha_venta ,PDO::PARAM_STR);                             //@FEC_RECOJO_MERCADERIA='2019-06-12',
                 $stmt->bindParam(23, $fecha_venta ,PDO::PARAM_STR);                             //@FEC_ENTREGA_LIMA='2019-06-12',
-                $stmt->bindParam(24, $fecha_venta ,PDO::PARAM_STR);                             //@FEC_GRACIA='2019-06-12',
+                $stmt->bindParam(24, $nuevagp ,PDO::PARAM_STR);                                 //@FEC_GRACIA='2019-06-12',
                 $stmt->bindParam(25, $fecha_ilimitada ,PDO::PARAM_STR);                         //@FEC_EJECUCION='1901-01-01',
                 $stmt->bindParam(26, $ind_material_servicio ,PDO::PARAM_STR);                   //@IND_MATERIAL_SERVICIO='M', 
                 $stmt->bindParam(27, $vacio  ,PDO::PARAM_STR);                                  //@COD_CATEGORIA_ESTADO_REQ='',

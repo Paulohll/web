@@ -15,7 +15,7 @@ use App\Biblioteca\Funcion;
 use PDO;
 use Mail;
 use PDF;
-use App\WEBOrdenDespacho,App\CMPOrden,App\WEBListaCliente;
+use App\WEBOrdenDespacho,App\CMPOrden,App\WEBListaCliente,App\ALMProducto,App\CMPCategoria;
   
 class PedidoDespachoController extends Controller
 {
@@ -30,14 +30,35 @@ class PedidoDespachoController extends Controller
 		$correlativo 						= 	(int)$request['correlativo'];
 		$fila 								= 	$request['fila'];
 
+		$disminuir 							= 	0;
+		$grupo_oc							= 	"";
+		$orden_cen							= 	"";
+
 
 		//eliminar la fila del array
 		foreach ($array_detalle_producto_request as $key => $item) {
             if((int)$item['correlativo'] == $fila) {
                 unset($array_detalle_producto_request[$key]);
+
+                //guardamos para luego disminuir
+				if($item['tipo_grupo_oc'] == 'oc_grupo'){	
+					$disminuir 	= 	1;
+					$grupo_oc 	= 	$item['grupo'];
+					$orden_cen 	= 	$item['orden_cen'];			
+				}
+
             }
 		}
 
+
+		if($disminuir>0){	
+			// dismuir la cantidad de rowspan
+			foreach ($array_detalle_producto_request as $key => $item) {
+		        if($item['grupo'] == $grupo_oc && $item['orden_cen'] == $orden_cen) {
+		        	$array_detalle_producto_request[$key]['grupo_orden'] = (int)$array_detalle_producto_request[$key]['grupo_orden'] -1;
+		        }
+			}
+		}
 
 	    //agregar a un array nuevo para listar en la vista
 		foreach ($array_detalle_producto_request as $key => $item) {
@@ -160,6 +181,77 @@ class PedidoDespachoController extends Controller
 
 
 
+	public function actionAjaxModalAgregarProductosPedido(Request $request)
+	{
+
+		$data_producto 						= 	$request['data_producto'];
+		$grupo 								= 	(int)$request['grupo'];
+		$correlativo 						= 	(int)$request['correlativo'];
+		$cuenta_id_m 						= 	$request['cuenta_id_m'];
+		$cliente 							= 	WEBListaCliente::where('COD_CONTRATO','=',$cuenta_id_m)->first();
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$array_detalle_producto 			=	array();
+		$rowspan 							= 	0;
+
+		foreach($data_producto as $obj){
+
+		    $producto_id 					= 	$obj['producto_id'];
+		    $producto 						= 	ALMProducto::where('COD_PRODUCTO','=',$producto_id)->first();
+		    $unidad_medida 					= 	CMPCategoria::where('COD_CATEGORIA','=',$producto->COD_CATEGORIA_UNIDAD_MEDIDA)->first();
+
+
+			$array_nuevo_producto 			=	array();
+			$grupo 							= 	$grupo + 1;
+
+
+			$correlativo 					= 	$correlativo + 1;
+			$array_nuevo_producto 			=	array(
+												"empresa_cliente_id" 		=> $cliente->id,
+												"empresa_cliente_nombre" 	=> $cliente->NOM_EMPR,
+												"orden_id" 					=> "",
+												"orden_cen" 				=> "",
+												"fecha_pedido" 				=> $this->fin,
+												"fecha_entrega" 			=> $this->fin,
+									            "producto_id" 				=> $producto->COD_PRODUCTO,
+									            "nombre_producto" 			=> $producto->NOM_PRODUCTO,
+									            "unidad_medida_id" 			=> $producto->COD_CATEGORIA_UNIDAD_MEDIDA,
+									            "nombre_unidad_medida" 		=> $unidad_medida->NOM_CATEGORIA,
+									            "cantidad" 					=> "0",
+									            "grupo" 					=> $grupo,
+									            "grupo_orden" 				=> "1",
+									            "grupo_movil" 				=> '0',
+									            "grupo_orden_movil" 		=> '0',
+									            "correlativo" 				=> $correlativo,
+										        "tipo_grupo_oc" 			=> "oc_individual"
+									        	);
+
+			$rowspan 						= 	$rowspan + 1;
+			array_push($array_detalle_producto,$array_nuevo_producto);
+
+
+
+		}
+
+		if(count($array_detalle_producto_request)>0){
+			foreach ($array_detalle_producto_request as $key => $item) {
+				array_push($array_detalle_producto,$item);
+			}
+		}
+
+		// ordenar el array por grupo
+		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$funcion 	= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'ajax'   		  						=> true,
+						 ]);
+
+	}
 
 	public function actionAjaxModalAgregarOrdenCenPedido(Request $request)
 	{
@@ -167,11 +259,13 @@ class PedidoDespachoController extends Controller
 		$data_orden_cen 					= 	$request['data_orden_cen'];
 		$grupo 								= 	(int)$request['grupo'];
 		$correlativo 						= 	(int)$request['correlativo'];
+		$tipo_grupo 						= 	$request['tipo_grupo'];
 
 		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
-
-
 		$array_detalle_producto 			=	array();
+
+
+
 
 		foreach($data_orden_cen as $obj){
 
@@ -179,11 +273,16 @@ class PedidoDespachoController extends Controller
 		    $orden 							= 	CMPOrden::where('COD_ORDEN','=',$ordencen_id)->first();
 			$lista_detalle_ordencen			= 	$this->funciones->lista_orden_cen_detalle($ordencen_id);
 			$array_nuevo_producto 			=	array();
-			$grupo 							= 	$grupo + 1;
+			if($tipo_grupo == 'oc_grupo'){	$grupo 	= 	$grupo + 1;	}	
 			$rowspan 						= 	0;
+
 
 			while($row = $lista_detalle_ordencen->fetch())
 			{
+
+				if($tipo_grupo == 'oc_individual'){	$grupo 	= 	$grupo + 1;	}
+
+				$unidad_medida 				= 	CMPCategoria::where('COD_CATEGORIA','=',$row['COD_CATEGORIA_UNIDAD_MEDIDA'])->first();
 
 				$correlativo 				= 	$correlativo + 1;
 				$array_nuevo_producto 		=	array(
@@ -195,13 +294,17 @@ class PedidoDespachoController extends Controller
 													"fecha_entrega" 			=> $this->fin,
 										            "producto_id" 				=> $row['COD_PRODUCTO'],
 										            "nombre_producto" 			=> $row['TXT_NOMBRE_PRODUCTO'],
+										            "unidad_medida_id" 			=> $row['COD_CATEGORIA_UNIDAD_MEDIDA'],
+										            "nombre_unidad_medida" 		=> $unidad_medida->NOM_CATEGORIA,
 										            "cantidad" 					=> $row['CAN_PRODUCTO'],
 										            "grupo" 					=> $grupo,
 										            "grupo_orden" 				=> '0',
 										            "grupo_movil" 				=> '0',
 										            "grupo_orden_movil" 		=> '0',
-										            "correlativo" 				=> $correlativo
+										            "correlativo" 				=> $correlativo,
+										            "tipo_grupo_oc" 			=> $tipo_grupo
 										        );
+
 
 				$rowspan 	= 	$rowspan + 1;
 				array_push($array_detalle_producto,$array_nuevo_producto);
@@ -209,7 +312,11 @@ class PedidoDespachoController extends Controller
 			}
 
 			// modificar un valor en array
-			$array_detalle_producto = $this->funciones->modificarmultidimensionalarray($array_detalle_producto,'grupo_orden',$rowspan,$orden->NRO_ORDEN_CEN);
+			if($tipo_grupo == 'oc_grupo'){
+				$array_detalle_producto = $this->funciones->modificarmultidimensionalarray($array_detalle_producto,'grupo_orden',$rowspan,$orden->NRO_ORDEN_CEN);
+			}else{
+				$array_detalle_producto = $this->funciones->modificar_individual_multidimensionalarray($array_detalle_producto,'grupo_orden');
+			}
 
 		}
 
@@ -348,8 +455,7 @@ class PedidoDespachoController extends Controller
 		$fecha_inicio 					= 	$this->fecha_menos_treinta_dias;
 		$fecha_fin 						= 	$this->inicio;
 		$listaordencen					= 	$this->funciones->lista_orden_cen($empresa_id,$cliente->id,$centro_id,$fecha_inicio,$fecha_fin);
-	 	
-
+		$combotipogrupo					= 	array('oc_grupo' => "Grupo",'oc_individual' => "Individual"); 	
 
 
 		return View::make('despacho/modal/ajax/ordencenproducto',
@@ -358,6 +464,7 @@ class PedidoDespachoController extends Controller
 						 	'listaproductos' 			=> $listaproductos,
 						 	'listaordencen' 			=> $listaordencen,
 						 	'funcion' 					=> $funcion,
+						 	'combotipogrupo' 			=> $combotipogrupo,
 						 	'ajax' 						=> true,
 						 ]);
 

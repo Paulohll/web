@@ -1,3 +1,11 @@
+.relative{
+  position: relative !important;
+}
+.absolute{
+  position: absolute !important;
+}
+
+
 .cursor{
   cursor: pointer;
 }

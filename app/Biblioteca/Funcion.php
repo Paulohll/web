@@ -103,6 +103,15 @@ class Funcion{
  	    return $toOrderArray; 
 	}
 
+	public function modificar_individual_multidimensionalarray($toOrderArray, $field){
+
+	    foreach($toOrderArray as $key => $row) {
+	    	$toOrderArray[$key][$field] = "1";
+	    } 
+ 	    return $toOrderArray; 
+	}
+
+
 	public function ordermultidimensionalarray($toOrderArray, $field, $inverse){  
 	    $position = array();  
 	    $newRow = array();  

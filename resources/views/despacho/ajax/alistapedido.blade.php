@@ -21,10 +21,6 @@
             </div>
           </div>
 
-
-
-
-
         </div>
         <div class="panel-body">
           <table class="table table-pedidos-despachos" style='font-size: 0.85em;' id="tablepedidodespacho" >
@@ -75,13 +71,13 @@
 
 
                     @if($sw_crear_movil == 1 and $item['grupo_movil'] <> '0') 
-                      <td rowspan = "{{$item['grupo_orden_movil']}}">
-                        {{$item['grupo_movil']}} {{$item['grupo_orden_movil']}}
+                      <td rowspan = "{{$item['grupo_orden_movil']}}" class='center'>
+                        <b>{{$item['grupo_movil']}}</b>
                       </td>
                     @else
                       @if($item['grupo_movil'] == '0') 
-                        <td>
-                          {{$item['grupo_movil']}} {{$item['grupo_orden_movil']}}
+                        <td class='center'>
+                          <b>{{$item['grupo_movil']}}</b>
                         </td>
                       @endif
                     @endif
@@ -94,19 +90,58 @@
                       </td>
                     @endif
                     @if($sw_crear == 1) 
-                    <td class="cell-detail" rowspan = "{{$item['grupo_orden']}}"> 
+                    <td class="cell-detail relative" rowspan = "{{$item['grupo_orden']}}" > 
                       <span><b>Cliente</b> : {{$item['empresa_cliente_nombre']}}</span>
                       <span><b>Orden Cen</b> : {{$item['orden_cen']}}</span>
+
+
+                      @if($item['tipo_grupo_oc'] == 'oc_grupo') 
+                        <div class="text-center be-checkbox be-checkbox-sm has-primary absolute" style="bottom: 10px;right: 6px;" >
+                          
+                          <input  
+                            type="checkbox"
+                            class="{{$item['grupo']}}{{$item['orden_cen']}} input_asignar_gop"
+                            id="{{$item['grupo']}}{{$item['orden_cen']}}" 
+                            data_check_oc="{{$item['grupo']}}{{$item['orden_cen']}}">
+
+                          <label  for="{{$item['grupo']}}{{$item['orden_cen']}}"
+                                data-atr = "ver"
+                                class = "checkbox checkbox_asignar_gop"                    
+                                name="{{$item['grupo']}}{{$item['orden_cen']}}"
+                          ></label>
+
+                        </div>
+                      @endif
+
+
                     </td> 
                     @endif
-                    <td>{{$item['nombre_producto']}} {{$item['correlativo']}}</td>
-                    <td>{{number_format($item['cantidad'], 2, '.', ',')}}</td>
+
+                    <td class="cell-detail">
+                      <span>{{$item['nombre_producto']}}</span>
+                      <span class="cell-detail-description-producto">{{$item['nombre_unidad_medida']}}</span>
+                    </td>
+
+
+
+
+                    <td>
+
+                        <input type="text"
+                         id="precio" 
+                         name="precio"
+                         value="{{number_format($item['cantidad'], 2, '.', ',')}}"
+                         class="form-control input-sm dinero updatepriced"
+                        >
+                      
+
+                    </td>
                     <td>{{$item['cantidad']}}</td>
                     <td>{{$item['cantidad']}}</td>
 
 
                     @if($sw_crear_movil == 1 and $item['grupo_movil'] <> '0') 
-                      <td rowspan = "{{$item['grupo_orden_movil']}}">
+                      <td rowspan = "{{$item['grupo_orden_movil']}}" class='fondogris'>
                         ssss
                       </td>
                     @else
@@ -117,14 +152,16 @@
                       @endif
                     @endif
 
-
                     <td>
+
                       <div class="text-center be-checkbox be-checkbox-sm has-primary">
                         <input  
                           type="checkbox"
                           class="{{$item['correlativo']}} input_asignar_lp"
-                          id="{{$item['correlativo']}}" >
+                          id="{{$item['correlativo']}}"
+                          data_check_sel="{{$item['grupo']}}{{$item['orden_cen']}}"
 
+                          @if($item["tipo_grupo_oc"] == "oc_grupo") disabled @endif>
                         <label  for="{{$item['correlativo']}}"
                               data-atr = "ver"
                               class = "checkbox checkbox_asignar_lp"                    
@@ -142,4 +179,14 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.dinero').inputmask({ 'alias': 'numeric', 
+    'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 
+    'digitsOptional': false, 
+    'prefix': '', 
+    'placeholder': '0'});
+  });
+</script> 
 

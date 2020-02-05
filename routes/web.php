@@ -201,12 +201,9 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-lista-orden-cen-producto', 'PedidoDespachoController@actionAjaxModalListaOrdenCenProducto');
 	Route::any('/ajax-modal-agregar-productos-orden-cen', 'PedidoDespachoController@actionAjaxModalAgregarProductosOrdenCen');
 	Route::any('/ajax-modal-agregar-orden-cen-pedido', 'PedidoDespachoController@actionAjaxModalAgregarOrdenCenPedido');
+	Route::any('/ajax-modal-agregar-producto-pedido', 'PedidoDespachoController@actionAjaxModalAgregarProductosPedido');
 	Route::any('/ajax-pedido-crear-movil', 'PedidoDespachoController@actionAjaxPedidoCrearMovil');
 	Route::any('/ajax-pedido-eliminar-fila', 'PedidoDespachoController@actionAjaxPedidoEliminarFila');
-
-
-
-
 
 
 

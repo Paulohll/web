@@ -2,10 +2,10 @@
 <div class="modal-header" style = "padding: 12px !important;">
   <button type="button" data-dismiss="modal" aria-hidden="true" class="close modal-close"><span class="mdi mdi-close"></span></button>
   <h3 class="modal-title"><strong>{{$funcion->funciones->data_cliente($cuenta_id)->NOM_EMPR}}</strong></h3>
-
+  <input type="hidden" name="cuenta_id_m" id='cuenta_id_m' value='{{$cuenta_id}}'>
 </div>
 
-<input type="text" name="tabestado" id='tabestado' value='ocen'>
+<input type="hidden" name="tabestado" id='tabestado' value='ocen'>
 
 <div class="modal-body modal-pedido-poc" style = "padding: 0px !important;">
   <div class="scroll_text scroll_text_heigth_poc" style = "padding: 0px !important;"> 

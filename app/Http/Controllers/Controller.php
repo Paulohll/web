@@ -42,7 +42,6 @@ class Controller extends BaseController
 
 
 
-
 		$this->fecha_menos_quince 		= date_format(date_create($nuevafechaq), 'd-m-Y');
 		$this->fecha_menos_treinta_dias = date_format(date_create($nuevafecha), 'd-m-Y');
 		$this->inicio 					= date_format(date_create($fecha->format('Y-m-d')), 'd-m-Y');

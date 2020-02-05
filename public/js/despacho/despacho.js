@@ -9,6 +9,25 @@ $(document).ready(function(){
     });
 
 
+    $(".despacho").on('click','.input_asignar_gop', function() {
+
+        var data_check_oc     = $(this).attr('data_check_oc');
+        if($(this).is(':checked')){
+            check = true;
+        }else{
+            check = false;
+        }  
+        $(".table-pedidos-despachos tbody tr").each(function(){
+
+            data_check_sel  = $(this).find('.input_asignar_lp').attr('data_check_sel');
+            if(data_check_oc == data_check_sel){
+                $(this).find('.input_asignar_lp').prop('checked', check);
+            }               
+        });
+
+    });
+
+
     $(".despacho").on('click','.eliminar-producto-despacho', function() {
 
         event.preventDefault();
@@ -149,16 +168,41 @@ $(document).ready(function(){
         var correlativo             = $('#correlativo').val();
         var tabestado               = $('#tabestado').val();
 
+
         if(tabestado == 'prod'){
 
+            var cuenta_id_m             = $('#cuenta_id_m').val();
             $('input[type=search]').val('').change();
             $("#despacholop").DataTable().search("").draw();
             data_producto = dataenviarproducto();
             if(data_producto.length<=0){alerterrorajax('Seleccione por lo menos una fila'); return false;}
             $('#modal-detalledocumento').niftyModal('hide');
 
+            $.ajax({
+
+                type    :   "POST",
+                url     :   carpeta+"/ajax-modal-agregar-producto-pedido",
+                data    :   {
+                                _token                  : _token,
+                                data_producto           : data_producto,
+                                grupo                   : grupo,
+                                correlativo             : correlativo,
+                                array_detalle_producto  : array_detalle_producto,
+                                cuenta_id_m             : cuenta_id_m,
+                            },    
+                success: function (data) {
+                    cerrarcargando();
+                    $('.lista_pedidos_despacho').html(data);
+                },
+                error: function (data) {
+                    error500(data);
+                }
+            });
+
 
         }else{
+
+            var tipo_grupo          = $('#tipo_grupo').val();
 
             $('input[type=search]').val('').change();
             $("#despacholocen").DataTable().search("").draw();
@@ -176,6 +220,7 @@ $(document).ready(function(){
                                 data_orden_cen          : data_orden_cen,
                                 grupo                   : grupo,
                                 correlativo             : correlativo,
+                                tipo_grupo              : tipo_grupo,
                                 array_detalle_producto  : array_detalle_producto,
                             },    
                 success: function (data) {
@@ -186,22 +231,9 @@ $(document).ready(function(){
                     error500(data);
                 }
             });
-
-
         }
-
-
-
-
-
-
-
-
-
     });
 });
-
-
 
 
 function dataenviarproducto(){

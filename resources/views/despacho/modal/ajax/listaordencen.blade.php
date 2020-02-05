@@ -1,3 +1,15 @@
+
+
+<div class="col-sm-3 abajocaja" style="position: fixed;top: 106px;">
+  {!! Form::select( 'tipo_grupo', $combotipogrupo, array(),
+                    [
+                      'class'       => 'select2 form-control control input-sm' ,
+                      'id'          => 'tipo_grupo',
+                      'required'    => '',
+                      'data-aw'     => '1',
+                    ]) !!}
+</div>
+
 <table id="despacholocen" class="table table table-hover table-fw-widget dt-responsive nowrap lista_tabla_oc" style='width: 100%;'>
   <thead>
     <tr> 
