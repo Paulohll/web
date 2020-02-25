@@ -51,10 +51,11 @@ $(document).ready(function(){
         var pedido_id               =   $(this).parents('.fila_producto').attr('data_pedido');
         var cantidad                =   $(this).parents('.fila_producto').find('.columna-cantidad').find('#cantidad').val();
         var precio                  =   $(this).val();
+        precio                      =   precio.replace(",", "");
+        cantidad                    =   cantidad.replace(",", "");
+        
         var puntero                 =   $(this).parents('.fila_producto');
         var importe                 =   parseFloat(precio) * parseFloat(cantidad);
-
-
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if(code==13){
@@ -110,8 +111,11 @@ $(document).ready(function(){
         var _token                  =   $('#token').val();
         var detallepedido_id        =   $(this).parents('.fila_producto').attr('data_detallepedido');
         var pedido_id               =   $(this).parents('.fila_producto').attr('data_pedido');
+
         var precio                  =   $(this).parents('.fila_producto').find('.columna-precio').find('#precio').val();
         var cantidad                =   $(this).val();
+        precio                      =   precio.replace(",", "");
+        cantidad                    =   cantidad.replace(",", "");
         var puntero                 =   $(this).parents('.fila_producto');
         var importe                 =   parseFloat(precio) * parseFloat(cantidad);
 
@@ -305,8 +309,6 @@ $(document).ready(function(){
         var _token              = $('#token').val();
         var pedido_id           = $(this).attr('data-id');
 
-        debugger;
-
         $.ajax({
             
             type    :   "POST",
@@ -316,7 +318,6 @@ $(document).ready(function(){
                             pedido_id               : pedido_id
                         },    
             success: function (data) {
-                debugger;
                 $('.modal-detalle-deuda-pedido').html(data);
                 $('#detalle-deuda-pedido').niftyModal();
             },
@@ -680,6 +681,10 @@ $(document).ready(function(){
 
         var cantidad            =   $('#cantidad').val();
         var precio              =   $('#precio').val();
+        precio                  =   precio.replace(",", "");
+        cantidad                =   cantidad.replace(",", "");
+
+        
         var data_ipr            =   $(this).attr('data_ipr');
         var data_ppr            =   $(this).attr('data_ppr');
         var data_npr            =   $(this).attr('data_npr');
