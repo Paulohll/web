@@ -31,10 +31,12 @@
                 <th>Fechas</th>
                 <th>Cliente</th>
                 <th>Producto</th>
-                <th>Cantidad (bls)</th>
-                <th>Palets</th>
+
+                <th>Cantidad</th>
+                <th>Kilos</th>
                 <th>Cantidad (sacos)</th>
-                <th>Palets / Kilos</th>
+                <th>Palet</th>
+                <th>Totales</th>
                 <th>Sel</th>
               </tr>
             </thead>
@@ -119,7 +121,7 @@
 
                     <td class="cell-detail">
                       <span>{{$item['nombre_producto']}}</span>
-                      <span class="cell-detail-description-producto">{{$item['nombre_unidad_medida']}}</span>
+                      <span class="cell-detail-description-producto">{{$item['nombre_unidad_medida']}} de  {{$item['presentacion_producto']}} kg</span>
                     </td>
 
 
@@ -136,18 +138,22 @@
                       
 
                     </td>
-                    <td>{{$item['cantidad']}}</td>
-                    <td>{{$item['cantidad']}}</td>
-
+                    <td class='center'>{{$item['kilos']}}</td>
+                    <td class='center'>{{$item['cantidad_sacos']}}</td>
+                    <td class='center'>{{$item['palets']}}</td>
 
                     @if($sw_crear_movil == 1 and $item['grupo_movil'] <> '0') 
-                      <td rowspan = "{{$item['grupo_orden_movil']}}" class='fondogris'>
-                        ssss
+                      <td rowspan = "{{$item['grupo_orden_movil']}}" class='fondogris cell-detail'>
+                          <span><b>Kilos</b> : {{$item['kilos']}}</span>
+                          <span><b>Palets</b> : {{$item['palets']}}</span>
                       </td>
                     @else
                       @if($item['grupo_movil'] == '0') 
-                        <td>
-                          ssss
+                        <td class='cell-detail'>
+                        
+                          <span><b>Kilos</b> : {{$item['kilos']}}</span>
+                          <span><b>Palets</b> : {{$item['palets']}}</span>
+
                         </td>
                       @endif
                     @endif

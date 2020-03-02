@@ -283,27 +283,23 @@ class PedidoDespachoController extends Controller
 				if($tipo_grupo == 'oc_individual'){	$grupo 	= 	$grupo + 1;	}
 
 				$unidad_medida 				= 	CMPCategoria::where('COD_CATEGORIA','=',$row['COD_CATEGORIA_UNIDAD_MEDIDA'])->first();
-
 				$correlativo 				= 	$correlativo + 1;
-				$array_nuevo_producto 		=	array(
-													"empresa_cliente_id" 		=> $orden->COD_EMPR_CLIENTE,
-													"empresa_cliente_nombre" 	=> $orden->TXT_EMPR_CLIENTE,
-													"orden_id" 					=> $row['COD_TABLA'],
-													"orden_cen" 				=> $orden->NRO_ORDEN_CEN,
-													"fecha_pedido" 				=> $this->fin,
-													"fecha_entrega" 			=> $this->fin,
-										            "producto_id" 				=> $row['COD_PRODUCTO'],
-										            "nombre_producto" 			=> $row['TXT_NOMBRE_PRODUCTO'],
-										            "unidad_medida_id" 			=> $row['COD_CATEGORIA_UNIDAD_MEDIDA'],
-										            "nombre_unidad_medida" 		=> $unidad_medida->NOM_CATEGORIA,
-										            "cantidad" 					=> $row['CAN_PRODUCTO'],
-										            "grupo" 					=> $grupo,
-										            "grupo_orden" 				=> '0',
-										            "grupo_movil" 				=> '0',
-										            "grupo_orden_movil" 		=> '0',
-										            "correlativo" 				=> $correlativo,
-										            "tipo_grupo_oc" 			=> $tipo_grupo
-										        );
+
+
+				//calculo de kilos,cantidad_sacos,palets
+				$producto 					= 	ALMProducto::where('COD_PRODUCTO','=',$row['COD_PRODUCTO'])->first();
+				$kilos 						=   $row['CAN_PRODUCTO']*$producto->CAN_PESO_MATERIAL;
+				$cantidad_sacos				= 	$row['CAN_PRODUCTO']/$producto->CAN_BOLSA_SACO;
+				$palets 					= 	$cantidad_sacos/$producto->CAN_SACO_PALET;
+				//
+
+
+
+				$array_nuevo_producto		= 	
+
+				$this->funciones->llenar_array_productos($orden->COD_EMPR_CLIENTE,$orden->TXT_EMPR_CLIENTE,$row['COD_TABLA'],$orden->NRO_ORDEN_CEN,$this->fin,
+								$this->fin,$row['COD_PRODUCTO'],$row['TXT_NOMBRE_PRODUCTO'],$row['COD_CATEGORIA_UNIDAD_MEDIDA'],$unidad_medida->NOM_CATEGORIA,
+								$row['CAN_PRODUCTO'],$kilos,$cantidad_sacos,$palets,$grupo,'0','0','0',$correlativo,$tipo_grupo,$producto->CAN_PESO_MATERIAL);
 
 
 				$rowspan 	= 	$rowspan + 1;

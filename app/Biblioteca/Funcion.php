@@ -14,24 +14,51 @@ use PDO;
 
 class Funcion{
 
-	public function llenar_array_productos($fecha_corte,$tipo_contrato,$cliente_id,$clase_con){
 
-		$array_nuevo_producto 		=	array(
-											"empresa_cliente_id" 		=> $orden->COD_EMPR_CLIENTE,
-											"empresa_cliente_nombre" 	=> $orden->TXT_EMPR_CLIENTE,
-											"orden_id" 					=> $row['COD_TABLA'],
-											"orden_cen" 				=> $orden->NRO_ORDEN_CEN,
-											"fecha_pedido" 				=> $this->fin,
-											"fecha_entrega" 			=> $this->fin,
-								            "producto_id" 				=> $row['COD_PRODUCTO'],
-								            "nombre_producto" 			=> $row['TXT_NOMBRE_PRODUCTO'],
-								            "cantidad" 					=> $row['CAN_PRODUCTO'],
+
+
+
+
+
+
+	public function llenar_array_productos($empresa_cliente_id,$empresa_cliente_nombre,$orden_id,$orden_cen,$fecha_pedido,
+										   $fecha_entrega,$producto_id,$nombre_producto,$unidad_medida_id,$nombre_unidad_medida,
+										   $cantidad,$kilos,$cantidad_sacos,$palets,$grupo,
+										   $grupo_orden,$grupo_movil,$grupo_orden_movil,$correlativo,$tipo_grupo_oc,
+										   $presentacion_producto){
+
+
+
+		return						array(
+											"empresa_cliente_id" 		=> $empresa_cliente_id,
+											"empresa_cliente_nombre" 	=> $empresa_cliente_nombre,
+											"orden_id" 					=> $orden_id,
+											"orden_cen" 				=> $orden_cen,
+											"fecha_pedido" 				=> $fecha_entrega,
+											"fecha_entrega" 			=> $fecha_entrega,
+								            "producto_id" 				=> $producto_id,
+								            "nombre_producto" 			=> $nombre_producto,
+								            "unidad_medida_id" 			=> $unidad_medida_id,
+								            "nombre_unidad_medida" 		=> $nombre_unidad_medida,
+								            "cantidad" 					=> $cantidad,
+								            "kilos" 					=> $kilos,
+								            "cantidad_sacos" 			=> $cantidad_sacos,
+								            "palets" 					=> $palets,
 								            "grupo" 					=> $grupo,
-								            "grupo_orden" 				=> '0',
-								            "grupo_movil" 				=> $grupo,
+								            "grupo_orden" 				=> $grupo_orden,
+								            "grupo_movil" 				=> $grupo_movil,
+								            "grupo_orden_movil" 		=> $grupo_orden_movil,
+								            "correlativo" 				=> $correlativo,
+								            "tipo_grupo_oc" 			=> $tipo_grupo_oc,
+								            "presentacion_producto"     => $presentacion_producto
 								        );
 
+
+
 	}
+
+
+
 
 
 	public function lista_saldo_cuenta_documento($fecha_corte,$tipo_contrato,$cliente_id,$clase_con){
