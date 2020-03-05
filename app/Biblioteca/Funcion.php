@@ -216,6 +216,7 @@ class Funcion{
         			@COD_CENTRO = ?, 
         			@FEC_ORDEN = ?, 
         			@FEC_ORDEN_FIN = ?');
+        
         $stmt->bindParam(1, $tipo_operacion ,PDO::PARAM_STR);                   
         $stmt->bindParam(2, $empresa_id  ,PDO::PARAM_STR);                        			
         $stmt->bindParam(3, $tipo_orden_id ,PDO::PARAM_STR);                           			

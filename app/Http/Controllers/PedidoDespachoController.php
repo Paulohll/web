@@ -355,9 +355,15 @@ class PedidoDespachoController extends Controller
 		$orden_cen							= 	"";
 
 
+		$disminuir_gm 						= 	0;
+		$grupo_movil						= 	"";
+		$grupo_orden_movil					= 	0;
+
+
 		//eliminar la fila del array
 		foreach ($array_detalle_producto_request as $key => $item) {
             if((int)$item['correlativo'] == $fila) {
+
                 unset($array_detalle_producto_request[$key]);
 
                 //guardamos para luego disminuir
@@ -366,10 +372,13 @@ class PedidoDespachoController extends Controller
 					$grupo_oc 	= 	$item['grupo'];
 					$orden_cen 	= 	$item['orden_cen'];			
 				}
-
+				if($item['grupo_movil'] > 0 ){	
+					$disminuir_gm 		= 	1;
+					$grupo_movil 		= 	$item['grupo_movil'];
+					$grupo_orden_movil	= 	$item['grupo_orden_movil'];
+				}
             }
 		}
-
 
 		if($disminuir>0){	
 			// dismuir la cantidad de rowspan
@@ -379,6 +388,17 @@ class PedidoDespachoController extends Controller
 		        }
 			}
 		}
+
+		//disminuir mobil cantidad
+		if($disminuir_gm>0){
+			foreach ($array_detalle_producto_request as $key => $item) {
+		        if($item['grupo_movil'] == $grupo_movil) {
+		        	$array_detalle_producto_request[$key]['grupo_orden_novil'] = (int)$grupo_orden_movil -1;
+		        }
+			}
+		}
+
+
 
 	    //agregar a un array nuevo para listar en la vista
 		foreach ($array_detalle_producto_request as $key => $item) {

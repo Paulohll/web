@@ -4,7 +4,7 @@
     <tr> 
       <th>PRODUCTO</th>
       <th>UNIDAD</th>
-      <th></th>
+      <th>SEL</th>
     </tr>
   </thead>
   <tbody>

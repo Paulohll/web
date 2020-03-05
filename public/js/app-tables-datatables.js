@@ -103,7 +103,7 @@ var App = (function () {
 
     $("#despacholocen").dataTable({
         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-        order : [[ 2, "desc" ]],
+        order : [[ 5, "desc" ]],
         "bPaginate": false
     });
 
