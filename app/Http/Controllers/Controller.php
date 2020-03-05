@@ -35,11 +35,10 @@ class Controller extends BaseController
 		$nuevafecha = date ('Y-m-j' , $nuevafecha);
 
 
-		//fecha actual 30 dias
+		//fecha actual 15 dias
 		$fechaquince = date('Y-m-j');
 		$nuevafechaq = strtotime ( '-15 day' , strtotime($fechaquince));
 		$nuevafechaq = date ('Y-m-j' , $nuevafechaq);
-
 
 
 		$this->fecha_menos_quince 		= date_format(date_create($nuevafechaq), 'd-m-Y');

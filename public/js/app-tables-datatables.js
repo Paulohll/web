@@ -13,67 +13,53 @@ var App = (function () {
 
 
 
-
     var collapsedGroups = {};
     var groupColumn = 2;
+
     var table = $('#table_group').DataTable({
             "lengthMenu": [[500, 1000, -1], [500, 1000, "All"]],
             "bPaginate": false,
-
             "oLanguage": {
                 "sSearch": ""
             },
+
             responsive: true,
             "columnDefs": [
                 { "visible": false, "targets": groupColumn }
             ],
             "order": [[ groupColumn, 'desc' ]],
             "displayLength": 25,
-
             "drawCallback": function ( settings ) {
-
                 var api = this.api();
                 var rows = api.rows( {page:'current'} ).nodes();
                 var last=null;
-     
                 api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-
                     if ( last !== group ) {
                         $(rows).eq(i).before(
-                            '<tr class="group  group-start '+i+'" data-name="'+group+'"><td colspan="8">'+group+'</td></tr>'
+                            '<tr class="group  group-start '+i+' collapsed" data-name="'+group+'"><td colspan="20">'+group+'</td></tr>'
                         );
                         last = group;
                     }else{
                         var collapsed = !!collapsedGroups[group];
                         api.rows( {page:'current'} ).nodes().each(function (r) {
-                            $(this).css("display","table-row");
+                            $(this).css("display","none");
                             $(this).attr('data-valor', group);
                         });
-
                     }
                 } );
-
             },
-
+            "ordering": false,
 
     } );
 
 
    $('#table_group tbody').on('click', 'tr.group-start', function () {
-
-
         var name    =   $(this).data('name');
         var sw      =   0;
-
-
-
         if ($(this).hasClass('collapsed')){
-
             //abrir group
             $('#table_group tbody tr').each(function (){
-
                 var data_name = $(this).attr('data-name');
-
                 if(data_name == name || sw == 1){
                     sw = 1;
                     $(this).css('display','table-row');
@@ -84,16 +70,11 @@ var App = (function () {
                     }
                 }
             });
-
-            $(this).removeClass( "collapsed" )
-
+            $(this).removeClass("collapsed");
         }else{
-
             //abrir group
             $('#table_group tbody tr').each(function (){
-
                 var data_name = $(this).attr('data-name');
-
                 if(data_name == name || sw == 1){
                     sw = 1;
                     if ($(this).hasClass('odd') || $(this).hasClass('even')){
@@ -106,11 +87,13 @@ var App = (function () {
                     }
                 }
             });
-
             $(this).addClass("collapsed");
-
         }
     });
+
+
+
+
 
 
     $("#despacholop").dataTable({

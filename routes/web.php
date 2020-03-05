@@ -197,6 +197,7 @@ Route::group(['middleware' => ['authaw']], function () {
 
     //DESPACHO (generar pedido)
 	Route::any('/gestion-de-generar-pedido/{idopcion}', 'PedidoDespachoController@actionListarGeneracionPedido');
+	Route::any('/ajax-lista-pedidos-despacho', 'PedidoDespachoController@actionAjaxListaPedidosDespacho');
 	Route::any('/crear-orden-pedido-despacho/{idopcion}', 'PedidoDespachoController@actionCrearPedidoDepacho');
 	Route::any('/ajax-modal-lista-orden-cen-producto', 'PedidoDespachoController@actionAjaxModalListaOrdenCenProducto');
 	Route::any('/ajax-modal-agregar-productos-orden-cen', 'PedidoDespachoController@actionAjaxModalAgregarProductosOrdenCen');
@@ -204,6 +205,13 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-agregar-producto-pedido', 'PedidoDespachoController@actionAjaxModalAgregarProductosPedido');
 	Route::any('/ajax-pedido-crear-movil', 'PedidoDespachoController@actionAjaxPedidoCrearMovil');
 	Route::any('/ajax-pedido-eliminar-fila', 'PedidoDespachoController@actionAjaxPedidoEliminarFila');
+	Route::any('/ajax-modificar-cantidad-producto-fila', 'PedidoDespachoController@actionAjaxModificarCantidadProductoFila');
+	Route::any('/ajax-modificar-muestra-producto-fila', 'PedidoDespachoController@actionAjaxModificarMuestraProductoFila');
+	Route::any('/ajax-pedido-modificar-fecha-de-entrega', 'PedidoDespachoController@actionAjaxPedidoModificarFechaEntrega');
+	Route::any('/ajax-modal-configuracion-producto-cantidad', 'PedidoDespachoController@actionAjaxModalConfiguracionProductoCantidad');
+	Route::any('/ajax-modificar-configuracion-del-producto', 'PedidoDespachoController@actionAjaxModificarConfiguracionDelProducto');
+
+
 
 
 

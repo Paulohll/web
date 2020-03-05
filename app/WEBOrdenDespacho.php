@@ -12,11 +12,9 @@ class WEBOrdenDespacho extends Model
     public $incrementing = false;
     public $keyType = 'string';
 
-
-    public function contrato()
+    public function detalleordendespacho()
     {
-        return $this->belongsTo('App\CMPContrato', 'contrato_id', 'COD_CONTRATO');
+        return $this->hasMany('App\WEBDetalleOrdenDespacho', 'ordendespacho_id', 'id')->where('activo','=', 1);
     }
-
     
 }

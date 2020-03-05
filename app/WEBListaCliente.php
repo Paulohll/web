@@ -13,6 +13,8 @@ class WEBListaCliente extends Model
     public $incrementing = false;
     public $keyType = 'string';
 
+
+
     public function scopeName($query,$name){
 
     	if(trim($name) != ''){

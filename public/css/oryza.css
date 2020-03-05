@@ -1,17 +1,29 @@
+.despacho_totales{
+  background: #e2d9d9;
+  font-weight: bold !important;
+}
+.configuracion-despacho-cantidad{
+  position: absolute;
+  bottom: 5px;
+  right: 2px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #4285f4;
+}
+.fondogris{
+  background: #cce6fd;
+}
 .relative{
   position: relative !important;
 }
 .absolute{
   position: absolute !important;
 }
-
-
 .cursor{
   cursor: pointer;
 }
-
 .table-pedidos-despachos td{
-  padding: 3px 10px !important;
+  padding: 3px 5px !important;
 }
 
 .eliminar-producto-despacho{
@@ -48,10 +60,11 @@
 
 
 #table_group .group {
-    background-color: #bce8f1;
-    font-weight: bold;
-    font-style: italic;
-    cursor: pointer;
+  background-color: #5cb85c;
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+  color: #fff;
 }
 #table_group .group td{
   font-weight: bold;
@@ -938,11 +951,20 @@ border-radius: 10px;
     color : #ea4335;
 }
 .dinero{
-height: 26px;
-    width: 90px !important;
-    display: block !important; 
-    margin: 0 auto;
+  height: 26px;
+  width: 90px !important;
+  display: block !important; 
+  margin: 0 auto;
 }
+
+.dineromuestra{
+  height: 26px;
+  width: 50px !important;
+  display: block !important; 
+  margin: 0 auto;
+  padding: 2px !important;
+}
+
 .sporcentaje{
     display: none;
 }

@@ -1,7 +1,15 @@
 
 <div class="modal-header" style = "padding: 12px !important;">
   <button type="button" data-dismiss="modal" aria-hidden="true" class="close modal-close"><span class="mdi mdi-close"></span></button>
-  <h3 class="modal-title"><strong>{{$funcion->funciones->data_cliente($cuenta_id)->NOM_EMPR}}</strong></h3>
+  <h3 class="modal-title">
+    <strong>
+      @if(is_null($cuenta_id)) 
+        -
+      @else
+        {{$funcion->funciones->data_cliente($cuenta_id)->NOM_EMPR}} 
+      @endif
+    </strong>
+  </h3>
   <input type="hidden" name="cuenta_id_m" id='cuenta_id_m' value='{{$cuenta_id}}'>
 </div>
 

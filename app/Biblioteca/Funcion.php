@@ -7,7 +7,7 @@ use App\WEBRolOpcion,App\WEBListaCliente,App\STDTipoDocumento,App\WEBPrecioProdu
 use App\WEBRegla,App\WEBUserEmpresaCentro,App\WEBPrecioProductoContrato,App\CMPCategoria,App\WEBPedido;
 use App\WEBPrecioProductoContratoHistorial,App\WEBPrecioProductoHistorial,App\CMPOrden,App\CMPDetalleProducto,App\WEBDetallePedido;
 use App\STDEmpresa,App\ALMCentro,App\STDEmpresaDireccion,App\CMPDocumentoCtble,App\WEBDocDoc;
-use App\WEBDetalleDocumentoAsociados,App\WEBReglaCreditoCliente;
+use App\WEBDetalleDocumentoAsociados,App\WEBReglaCreditoCliente,App\WEBDetalleOrdenDespacho;
 use App\User;
 use Keygen;
 use PDO;
@@ -15,7 +15,31 @@ use PDO;
 class Funcion{
 
 
+	public function totales_kilos_palets_tabla($ordendespacho_id,$grupo_movil,$atributo){
+	    
+	    $total = 0;
+		$listadetalleordendespacho    =	WEBDetalleOrdenDespacho::where('ordendespacho_id','=',$ordendespacho_id)->get();
+		foreach($listadetalleordendespacho as $index => $item){
+			if($item->grupo_movil == $grupo_movil){
+	    		 $total = $total + (float)$item->$atributo;
+	    	}
 
+		}
+ 	    return $total;
+	}
+
+	public function totales_kilos_palets($toOrderArray,$grupo_movil,$atributo){
+	    
+	    $total = 0;
+	    foreach($toOrderArray as $key => $row) {
+
+	    	if($row['grupo_movil'] == $grupo_movil){
+	    		 $total = $total + (float)$toOrderArray[$key][$atributo];
+	    	}
+	    } 
+ 	    return $total;
+
+	}
 
 
 
@@ -50,7 +74,8 @@ class Funcion{
 								            "grupo_orden_movil" 		=> $grupo_orden_movil,
 								            "correlativo" 				=> $correlativo,
 								            "tipo_grupo_oc" 			=> $tipo_grupo_oc,
-								            "presentacion_producto"     => $presentacion_producto
+								            "presentacion_producto"     => $presentacion_producto,
+								            "muestra"     				=> '0'
 								        );
 
 
@@ -499,6 +524,13 @@ class Funcion{
 
 		$direccion 		= 		WEBListaCliente::where('COD_CONTRATO','=',$contrato_id)->first();
 		return $direccion;				
+
+	}
+
+	public function data_cliente_cliente_id($cliente_id) {
+
+		$cliente 		= 		WEBListaCliente::where('id','=',$cliente_id)->first();
+		return $cliente;				
 
 	}
 

@@ -12,7 +12,15 @@ class WEBDetalleOrdenDespacho extends Model
     public $incrementing = false;
     public $keyType = 'string';
 
+    public function ordendespacho()
+    {
+        return $this->belongsTo('App\WEBOrdenDespacho', 'ordendespacho_id', 'id')->where('activo','=', 1);
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo('App\ALMProducto', 'producto_id', 'COD_PRODUCTO');
+    }
 
 
-    
 }

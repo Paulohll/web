@@ -29,5 +29,10 @@ class ALMProducto extends Model
         return $this->hasMany('App\WEBDetallePedido', 'producto_id', 'id');
     }
 
+    public function detalleordendespacho()
+    {
+        return $this->hasMany('App\WEBDetalleOrdenDespacho', 'producto_id', 'id');
+    }
+
 
 }

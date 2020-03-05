@@ -1,12 +1,12 @@
 
-<input type="hidden" name="array_detalle_producto" id='array_detalle_producto' value='{{json_encode($array_detalle_producto)}}'>
+
 <input type="hidden" name="grupo" id='grupo' value='{{$grupo}}'>
 <input type="hidden" name="correlativo" id='correlativo' value='{{$correlativo}}'>
 
 
 <div class="main-content container-fluid" style = "padding: 0px;">
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12" style = "padding-left: 2px;padding-right : 2px">
       <div class="panel panel-default panel-table">
         <div class="panel-heading"><b>Solicitud de pedido</b>
 
@@ -15,12 +15,14 @@
               <span class="icon mdi mdi-more-vert dropdown-toggle" id="menudespacho" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></span>
 
               <ul class="dropdown-menu" aria-labelledby="menudespacho" style="margin: 7px -169px 0px;">
-                <li><a href="#" class='crearmobil'>Crear mobil</a></li> 
+
+                <li><a href="#" class='crearmobil'>Crear mobil</a></li>
+                <li><a href="#" class='cambiarfechaentrega'>Modificar fecha de entrega</a></li>
+
               </ul>
 
             </div>
           </div>
-
         </div>
         <div class="panel-body">
           <table class="table table-pedidos-despachos" style='font-size: 0.85em;' id="tablepedidodespacho" >
@@ -32,9 +34,11 @@
                 <th>Cliente</th>
                 <th>Producto</th>
 
+
+                <th>Muestra</th>
                 <th>Cantidad</th>
                 <th>Kilos</th>
-                <th>Cantidad (sacos)</th>
+                <th>Sacos</th>
                 <th>Palet</th>
                 <th>Totales</th>
                 <th>Sel</th>
@@ -52,18 +56,16 @@
                     $sw_crear          =   $array_respuesta['sw_crear'];
                     $grupo             =   $array_respuesta['grupo'];
 
-
-
                     //agrupar por grupo movil
                     $array_respuesta   =   $funcion->funciones->crearrolwpan($item['grupo_movil'],$index,$grupo_movil);
                     $sw_crear_movil    =   $array_respuesta['sw_crear'];
                     $grupo_movil       =   $array_respuesta['grupo'];
 
-
                   @endphp
 
                   <tr class='fila_pedido'
                       data_correlativo="{{$item['correlativo']}}"
+                      data_producto="{{$item['producto_id']}}"
                     >
                     <td class='center'>
                       <span class="badge badge-danger cursor eliminar-producto-despacho">
@@ -73,7 +75,7 @@
 
 
                     @if($sw_crear_movil == 1 and $item['grupo_movil'] <> '0') 
-                      <td rowspan = "{{$item['grupo_orden_movil']}}" class='center'>
+                      <td rowspan = "{{$item['grupo_orden_movil']}}" class='center fondogris'>
                         <b>{{$item['grupo_movil']}}</b>
                       </td>
                     @else
@@ -119,11 +121,23 @@
                     </td> 
                     @endif
 
-                    <td class="cell-detail">
+                    <td class="cell-detail relative">
                       <span>{{$item['nombre_producto']}}</span>
-                      <span class="cell-detail-description-producto">{{$item['nombre_unidad_medida']}} de  {{$item['presentacion_producto']}} kg</span>
+                      <span class="cell-detail-description-producto">
+                      {{$item['nombre_unidad_medida']}} de  {{$item['presentacion_producto']}} kg
+                      </span>
+                      <i class="mdi mdi-settings configuracion-despacho-cantidad"></i>
                     </td>
 
+                    <td>
+
+                        <input type="text"
+                         id="muestra" 
+                         name="muestra"
+                         value="{{number_format($item['muestra'], 2, '.', ',')}}"
+                         class="form-control input-sm dinero dineromuestra updatepricemuestrad"
+                        >
+                    </td>
 
 
 
@@ -138,22 +152,24 @@
                       
 
                     </td>
-                    <td class='center'>{{$item['kilos']}}</td>
-                    <td class='center'>{{$item['cantidad_sacos']}}</td>
-                    <td class='center'>{{$item['palets']}}</td>
+                    <td class='center'>{{number_format($item['kilos'],4,'.',',')}}</td>
+                    <td class='center'>{{number_format($item['cantidad_sacos'],4,'.',',')}}</td>
+                    <td class='center'>{{number_format($item['palets'],4,'.',',')}}</td>
 
                     @if($sw_crear_movil == 1 and $item['grupo_movil'] <> '0') 
                       <td rowspan = "{{$item['grupo_orden_movil']}}" class='fondogris cell-detail'>
-                          <span><b>Kilos</b> : {{$item['kilos']}}</span>
-                          <span><b>Palets</b> : {{$item['palets']}}</span>
+                          <span><b>Kilos</b> : 
+                            {{number_format($funcion->funciones->totales_kilos_palets($array_detalle_producto,$item['grupo_movil'],'kilos'),4,'.',',')}}
+                          </span>
+                          <span><b>Palets</b> :
+                            {{number_format($funcion->funciones->totales_kilos_palets($array_detalle_producto,$item['grupo_movil'],'palets'),4,'.',',')}} 
+                          </span>
                       </td>
                     @else
                       @if($item['grupo_movil'] == '0') 
                         <td class='cell-detail'>
-                        
-                          <span><b>Kilos</b> : {{$item['kilos']}}</span>
-                          <span><b>Palets</b> : {{$item['palets']}}</span>
-
+                          <span><b>Kilos</b> : {{number_format($item['kilos'],4,'.',',')}}</span>
+                          <span><b>Palets</b> : {{number_format($item['palets'],4,'.',',')}}</span>
                         </td>
                       @endif
                     @endif
@@ -181,8 +197,23 @@
             </tbody>
           </table>
         </div>
+
+
+
+
       </div>
     </div>
+    <br>
+    <div class="col-xs-12" style="text-align: right;">
+
+      <form method="POST"  action="{{ url('/crear-orden-pedido-despacho/'.$opcion_id) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed">
+          {{ csrf_field() }}
+        <input type="hidden" name="array_detalle_producto" id='array_detalle_producto' value='{{json_encode($array_detalle_producto)}}'>
+        <button type="submit" class="btn btn-space btn-primary">Guardar</button>
+      </form>
+
+    </div>
+
   </div>
 </div>
 

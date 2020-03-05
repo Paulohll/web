@@ -15,10 +15,328 @@ use App\Biblioteca\Funcion;
 use PDO;
 use Mail;
 use PDF;
-use App\WEBOrdenDespacho,App\CMPOrden,App\WEBListaCliente,App\ALMProducto,App\CMPCategoria;
+use App\WEBOrdenDespacho,App\WEBDetalleOrdenDespacho,App\CMPOrden,App\WEBListaCliente,App\ALMProducto,App\CMPCategoria;
   
 class PedidoDespachoController extends Controller
 {
+
+	public function actionCrearPedidoDepacho($idopcion,Request $request)
+	{
+
+		/******************* validar url **********************/
+		$validarurl = $this->funciones->getUrl($idopcion,'Anadir');
+	    if($validarurl <> 'true'){return $validarurl;}
+	    /******************************************************/
+
+		if($_POST)
+		{
+
+
+			try{
+
+				DB::beginTransaction();
+
+				$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+				$idordendespacho			= 	$this->funciones->getCreateIdMaestra('WEB.ordendespachos');
+				$codigo 					= 	$this->funciones->generar_codigo('WEB.ordendespachos',8);
+
+				//PEDIDO
+				$cabecera            	 	=	new WEBOrdenDespacho;
+				$cabecera->id 	     	 	=  	$idordendespacho;
+				$cabecera->estado_id 	    =  	'EPP0000000000002';
+				$cabecera->codigo 	    	=  	$codigo;
+				$cabecera->fecha_crea 	 	=   $this->fechaactual;
+				$cabecera->usuario_crea 	=   Session::get('usuario')->id;
+				$cabecera->empresa_id 		=   Session::get('empresas')->COD_EMPR;
+				$cabecera->centro_id 		=   Session::get('centros')->COD_CENTRO;
+				$cabecera->save();
+
+
+				foreach($array_detalle_producto_request as $key => $row) {
+
+
+					$iddetalleordendespacho				= 	$this->funciones->getCreateIdMaestra('WEB.detalleordendespachos');
+					$detalle            	 			=	new WEBDetalleOrdenDespacho;
+
+					$detalle->id 	     	 			=  	$iddetalleordendespacho;
+					$detalle->ordendespacho_id 			=  	$idordendespacho;
+					$detalle->nro_orden_cen 			=  	$row['orden_cen'];
+					$detalle->fecha_pedido 				=  	$row['fecha_pedido'];
+					$detalle->fecha_entrega 			=  	$row['fecha_entrega'];
+					$detalle->muestra 					=  	$row['muestra'];
+					$detalle->cantidad 					=  	$row['cantidad'];
+					$detalle->kilos 					=  	$row['kilos'];
+					$detalle->cantidad_sacos 			=  	$row['cantidad_sacos'];
+					$detalle->palets 					=  	$row['palets'];
+					$detalle->presentacion_producto 	=  	$row['presentacion_producto'];
+					$detalle->grupo 					=  	$row['grupo'];
+					$detalle->grupo_orden 				=  	$row['grupo_orden'];
+					$detalle->grupo_movil 				=  	$row['grupo_movil'];
+					$detalle->grupo_orden_movil 		=  	$row['grupo_orden_movil'];
+					$detalle->correlativo 				=  	$row['correlativo'];
+					$detalle->tipo_grupo_oc 			=  	$row['tipo_grupo_oc'];
+					$detalle->fecha_crea 	 			=   $this->fechaactual;
+					$detalle->usuario_crea 				=   Session::get('usuario')->id;
+					$detalle->unidad_medida_id 			=  	$row['unidad_medida_id'];
+
+					$detalle->cliente_id 				=  	$row['empresa_cliente_id'];
+					$detalle->orden_id 					=  	$row['orden_id'];
+					$detalle->producto_id 				=  	$row['producto_id'];
+					$detalle->empresa_id 				=   Session::get('empresas')->COD_EMPR;
+					$detalle->centro_id 				=   Session::get('centros')->COD_CENTRO;
+					$detalle->save();
+
+			    }
+
+
+				DB::commit();
+	 			return Redirect::to('/gestion-de-generar-pedido/'.$idopcion)->with('bienhecho', 'Pedido para despacho '.$codigo.' registrado con exito');
+
+
+			}catch(Exception $ex){
+				DB::rollback();
+				return Redirect::to('/gestion-de-generar-pedido/'.$idopcion)->with('errorbd', 'Ocurrio un error inesperado. Porfavor contacte con el administrador del sistema : '.$ex);	
+			}
+
+		}else{
+                                   
+			$comboclientes				= 	$this->funciones->combo_clientes_cuenta();
+			$grupo						= 	0;
+			$correlativo				= 	0;
+
+
+			return View::make('despacho/crearordenpedidodespacho',
+							 [
+							 	'idopcion' 			=> $idopcion,
+								'comboclientes' 	=> $comboclientes,						
+								'inicio'			=> $this->inicio,
+								'hoy'				=> $this->fin,
+							 	'grupo' 			=> $grupo,
+							 	'correlativo' 		=> $correlativo,
+							 ]);
+		}
+	}
+
+
+
+	public function actionAjaxModificarConfiguracionDelProducto(Request $request)
+	{
+
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$array_detalle_producto 			=	array();
+		$correlativo 						= 	$request['correlativo'];
+		$grupo 								= 	$request['grupo'];
+		$cantidad_bolsa_saco 				= 	$request['cantidad_bolsa_saco'];
+		$cantidad_saco_palet 				= 	$request['cantidad_saco_palet'];
+		$producto_id 						= 	$request['producto_id'];
+		$producto 							= 	ALMProducto::where('COD_PRODUCTO','=',$producto_id)->first();
+		$opcion_id 							= 	$request['opcion_id'];
+
+		$producto->CAN_BOLSA_SACO 			= 	$cantidad_bolsa_saco;
+		$producto->CAN_SACO_PALET 			= 	$cantidad_saco_palet;
+		$producto->save();
+
+
+		//actualizar el array con nuevos valores(configuracion del producto) 
+		foreach($array_detalle_producto_request as $key => $row) {
+            if($row['producto_id'] == $producto_id) {
+				//calculo de kilos,cantidad_sacos,palets
+				$kilos 							=   $row['cantidad']*$producto->CAN_PESO_MATERIAL;
+				$cantidad_sacos					= 	$row['cantidad']/$producto->CAN_BOLSA_SACO;
+				$palets 						= 	$cantidad_sacos/$producto->CAN_SACO_PALET;
+				//
+				$array_detalle_producto_request[$key]['kilos'] 				= $kilos;
+				$array_detalle_producto_request[$key]['cantidad_sacos'] 	= $cantidad_sacos;
+				$array_detalle_producto_request[$key]['palets'] 			= $palets;
+            }
+	    } 
+
+	    //agregar a un array nuevo para listar en la vista
+		foreach ($array_detalle_producto_request as $key => $item) {
+			array_push($array_detalle_producto,$item);
+		}
+
+		// ordenar el array por grupo
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
+		$funcion 				= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
+						 	'ajax'   		  						=> true,
+						 ]);
+	}
+
+
+
+	public function actionAjaxModalConfiguracionProductoCantidad(Request $request)
+	{
+
+		$producto_id 		= 	$request['producto_id'];
+		$funcion 			= 	$this;
+		$producto 			= 	ALMProducto::where('COD_PRODUCTO','=',$producto_id)->first();
+		$unidad_medida 		= 	CMPCategoria::where('COD_CATEGORIA','=',$producto->COD_CATEGORIA_UNIDAD_MEDIDA)->first();
+
+
+		return View::make('despacho/modal/ajax/configuracionproductocantidad',
+						 [
+						 	'producto' 			=> $producto,
+						 	'unidad_medida' 	=> $unidad_medida,
+						 	'funcion' 			=> $funcion
+						 ]);
+	}
+
+
+	public function actionAjaxPedidoModificarFechaEntrega(Request $request)
+	{
+
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$array_detalle_producto 			=	array();
+		$data_producto_pedido 				= 	$request['data_producto_pedido'];
+		$fechadeentrega 					=   date_format(date_create($request['fechadeentrega']), 'd-m-Y');
+		$correlativo 						= 	$request['correlativo'];
+		$grupo 								= 	$request['grupo'];
+		$opcion_id 							= 	$request['opcion_id'];
+
+
+
+		//actualizar el array con nuevos valores(fecha de entrega) 
+		foreach($array_detalle_producto_request as $key => $row) {
+			$encontro = array_search($row['correlativo'], array_column($data_producto_pedido, 'correlativo'));
+		    if (!is_bool($encontro)){
+		    	$array_detalle_producto_request[$key]['fecha_entrega'] = $fechadeentrega;
+		    }
+	    } 
+
+	    //agregar a un array nuevo para listar en la vista
+		foreach ($array_detalle_producto_request as $key => $item) {
+			array_push($array_detalle_producto,$item);
+		}
+
+		// ordenar el array por grupo
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
+		$funcion 				= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
+						 	'ajax'   		  						=> true,
+						 ]);
+	}
+
+	
+	public function actionAjaxModificarMuestraProductoFila(Request $request)
+	{
+
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$array_detalle_producto 			=	array();
+		$muestra 							= 	(float)$request['muestra'];
+		$fila 								= 	$request['fila'];
+		$producto_id 						= 	$request['producto_id'];
+		$correlativo 						= 	$request['correlativo'];
+		$grupo 								= 	$request['grupo'];
+		$opcion_id 							= 	$request['opcion_id'];
+
+
+
+		//actualizar el array con nuevos valores
+		foreach ($array_detalle_producto_request as $key => $item) {
+            if((int)$item['correlativo'] == $fila) {
+				$array_detalle_producto_request[$key]['muestra'] 		= $muestra;
+            }
+		}
+
+	    //agregar a un array nuevo para listar en la vista
+		foreach ($array_detalle_producto_request as $key => $item) {
+			array_push($array_detalle_producto,$item);
+		}
+
+		// ordenar el array por grupo
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
+		$funcion 				= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
+						 	'ajax'   		  						=> true,
+						 ]);
+	}
+
+
+
+
+
+	public function actionAjaxModificarCantidadProductoFila(Request $request)
+	{
+
+		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
+		$array_detalle_producto 			=	array();
+		$cantidad 							= 	(float)$request['cantidad'];
+		$fila 								= 	$request['fila'];
+		$producto_id 						= 	$request['producto_id'];
+		$correlativo 						= 	$request['correlativo'];
+		$grupo 								= 	$request['grupo'];
+		$opcion_id 							= 	$request['opcion_id'];
+
+
+		//calculo de kilos,cantidad_sacos,palets
+		$producto 							= 	ALMProducto::where('COD_PRODUCTO','=',$producto_id)->first();
+		$kilos 								=   $cantidad*$producto->CAN_PESO_MATERIAL;
+		$cantidad_sacos						= 	$cantidad/$producto->CAN_BOLSA_SACO;
+		$palets 							= 	$cantidad_sacos/$producto->CAN_SACO_PALET;
+		//
+
+		//actualizar el array con nuevos valores
+		foreach ($array_detalle_producto_request as $key => $item) {
+            if((int)$item['correlativo'] == $fila) {
+
+				$array_detalle_producto_request[$key]['cantidad'] 		= $cantidad;
+				$array_detalle_producto_request[$key]['kilos'] 			= $kilos;
+				$array_detalle_producto_request[$key]['cantidad_sacos'] = $cantidad_sacos;
+				$array_detalle_producto_request[$key]['palets'] 		= $palets;
+
+            }
+		}
+
+	    //agregar a un array nuevo para listar en la vista
+		foreach ($array_detalle_producto_request as $key => $item) {
+			array_push($array_detalle_producto,$item);
+		}
+
+		// ordenar el array por grupo
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
+		$funcion 				= 	$this;
+
+		return View::make('despacho/ajax/alistapedido',
+						 [
+						 	'array_detalle_producto' 				=> $array_detalle_producto,
+						 	'grupo' 								=> $grupo,
+						 	'correlativo' 							=> $correlativo,
+						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
+						 	'ajax'   		  						=> true,
+						 ]);
+	}
 
 
 	public function actionAjaxPedidoEliminarFila(Request $request)
@@ -29,6 +347,8 @@ class PedidoDespachoController extends Controller
 		$grupo 								= 	(int)$request['grupo'];
 		$correlativo 						= 	(int)$request['correlativo'];
 		$fila 								= 	$request['fila'];
+		$opcion_id 							= 	$request['opcion_id'];
+
 
 		$disminuir 							= 	0;
 		$grupo_oc							= 	"";
@@ -68,6 +388,7 @@ class PedidoDespachoController extends Controller
 		// ordenar el array por grupo
 		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
 		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
 		$funcion 				= 	$this;
 
 		return View::make('despacho/ajax/alistapedido',
@@ -76,15 +397,10 @@ class PedidoDespachoController extends Controller
 						 	'grupo' 								=> $grupo,
 						 	'correlativo' 							=> $correlativo,
 						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
 						 	'ajax'   		  						=> true,
 						 ]);
-
-
-
 	}
-
-
-
 
 
 	public function actionAjaxPedidoCrearMovil(Request $request)
@@ -95,7 +411,7 @@ class PedidoDespachoController extends Controller
 		$array_detalle_producto 			=	array();
 		$grupo 								= 	(int)$request['grupo'];
 		$correlativo 						= 	(int)$request['correlativo'];
-
+		$opcion_id 							= 	$request['opcion_id'];
 
 		//el mayor valor numero de movil
 		$grupo_mobil_mayor 					=	0;
@@ -163,6 +479,7 @@ class PedidoDespachoController extends Controller
 		// ordenar el array por grupo
 		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'correlativo',false);		
 		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = 	$this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
 		$funcion 				= 	$this;
 
 		return View::make('despacho/ajax/alistapedido',
@@ -171,6 +488,7 @@ class PedidoDespachoController extends Controller
 						 	'grupo' 								=> $grupo,
 						 	'correlativo' 							=> $correlativo,
 						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
 						 	'ajax'   		  						=> true,
 						 ]);
 
@@ -186,9 +504,22 @@ class PedidoDespachoController extends Controller
 
 		$data_producto 						= 	$request['data_producto'];
 		$grupo 								= 	(int)$request['grupo'];
+		$opcion_id 							= 	$request['opcion_id'];
 		$correlativo 						= 	(int)$request['correlativo'];
+
+
 		$cuenta_id_m 						= 	$request['cuenta_id_m'];
 		$cliente 							= 	WEBListaCliente::where('COD_CONTRATO','=',$cuenta_id_m)->first();
+
+		if(count($cliente)>0){
+			$cliente_id 					= 	$cliente->id;
+			$cliente_nombre 				= 	$cliente->NOM_EMPR;
+		}else{
+			$cliente_id 					= 	"";
+			$cliente_nombre 				= 	"";
+		}
+
+
 		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
 		$array_detalle_producto 			=	array();
 		$rowspan 							= 	0;
@@ -203,27 +534,20 @@ class PedidoDespachoController extends Controller
 			$array_nuevo_producto 			=	array();
 			$grupo 							= 	$grupo + 1;
 
-
 			$correlativo 					= 	$correlativo + 1;
-			$array_nuevo_producto 			=	array(
-												"empresa_cliente_id" 		=> $cliente->id,
-												"empresa_cliente_nombre" 	=> $cliente->NOM_EMPR,
-												"orden_id" 					=> "",
-												"orden_cen" 				=> "",
-												"fecha_pedido" 				=> $this->fin,
-												"fecha_entrega" 			=> $this->fin,
-									            "producto_id" 				=> $producto->COD_PRODUCTO,
-									            "nombre_producto" 			=> $producto->NOM_PRODUCTO,
-									            "unidad_medida_id" 			=> $producto->COD_CATEGORIA_UNIDAD_MEDIDA,
-									            "nombre_unidad_medida" 		=> $unidad_medida->NOM_CATEGORIA,
-									            "cantidad" 					=> "0",
-									            "grupo" 					=> $grupo,
-									            "grupo_orden" 				=> "1",
-									            "grupo_movil" 				=> '0',
-									            "grupo_orden_movil" 		=> '0',
-									            "correlativo" 				=> $correlativo,
-										        "tipo_grupo_oc" 			=> "oc_individual"
-									        	);
+
+
+			//calculo de kilos,cantidad_sacos,palets
+			$kilos 							=   0*$producto->CAN_PESO_MATERIAL;
+			$cantidad_sacos					= 	0/$producto->CAN_BOLSA_SACO;
+			$palets 						= 	$cantidad_sacos/$producto->CAN_SACO_PALET;
+			//
+
+			$array_nuevo_producto		= 	
+			$this->funciones->llenar_array_productos($cliente_id,$cliente_nombre,'','',$this->fin,
+							$this->fin,$producto->COD_PRODUCTO,$producto->NOM_PRODUCTO,$producto->COD_CATEGORIA_UNIDAD_MEDIDA,$unidad_medida->NOM_CATEGORIA,
+							'0',$kilos,$cantidad_sacos,$palets,$grupo,'1','0','0',$correlativo,'oc_individual',$producto->CAN_PESO_MATERIAL);
+
 
 			$rowspan 						= 	$rowspan + 1;
 			array_push($array_detalle_producto,$array_nuevo_producto);
@@ -240,6 +564,7 @@ class PedidoDespachoController extends Controller
 
 		// ordenar el array por grupo
 		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
 		$funcion 	= 	$this;
 
 		return View::make('despacho/ajax/alistapedido',
@@ -248,6 +573,7 @@ class PedidoDespachoController extends Controller
 						 	'grupo' 								=> $grupo,
 						 	'correlativo' 							=> $correlativo,
 						 	'funcion' 								=> $funcion,
+						 	'opcion_id' 							=> $opcion_id,
 						 	'ajax'   		  						=> true,
 						 ]);
 
@@ -260,11 +586,10 @@ class PedidoDespachoController extends Controller
 		$grupo 								= 	(int)$request['grupo'];
 		$correlativo 						= 	(int)$request['correlativo'];
 		$tipo_grupo 						= 	$request['tipo_grupo'];
+		$opcion_id 							= 	$request['opcion_id'];
 
 		$array_detalle_producto_request 	= 	json_decode($request['array_detalle_producto'],true);
 		$array_detalle_producto 			=	array();
-
-
 
 
 		foreach($data_orden_cen as $obj){
@@ -293,8 +618,6 @@ class PedidoDespachoController extends Controller
 				$palets 					= 	$cantidad_sacos/$producto->CAN_SACO_PALET;
 				//
 
-
-
 				$array_nuevo_producto		= 	
 
 				$this->funciones->llenar_array_productos($orden->COD_EMPR_CLIENTE,$orden->TXT_EMPR_CLIENTE,$row['COD_TABLA'],$orden->NRO_ORDEN_CEN,$this->fin,
@@ -322,8 +645,11 @@ class PedidoDespachoController extends Controller
 			}
 		}
 
+
 		// ordenar el array por grupo
 		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo',false);
+		$array_detalle_producto = $this->funciones->ordermultidimensionalarray($array_detalle_producto,'grupo_movil',false);
+
 		$funcion 	= 	$this;
 
 		return View::make('despacho/ajax/alistapedido',
@@ -331,6 +657,7 @@ class PedidoDespachoController extends Controller
 						 	'array_detalle_producto' 				=> $array_detalle_producto,
 						 	'grupo' 								=> $grupo,
 						 	'correlativo' 							=> $correlativo,
+						 	'opcion_id' 							=> $opcion_id,
 						 	'funcion' 								=> $funcion,
 						 	'ajax'   		  						=> true,
 						 ]);
@@ -344,8 +671,16 @@ class PedidoDespachoController extends Controller
 		$validarurl = $this->funciones->getUrl($idopcion,'Ver');
 	    if($validarurl <> 'true'){return $validarurl;}
 	    /******************************************************/
-	    $listaordendespacho 			= 	WEBOrdenDespacho::get();					
+
+		$fechainicio 					=  	$this->fecha_menos_quince;
+		$fechafin 						=  	$this->fin;
+	    $listaordendespacho 			=   WEBDetalleOrdenDespacho::where('fecha_pedido','>=', $fechainicio)
+	    									->where('fecha_pedido','<=', $fechafin)
+	    									->orderBy('fecha_crea', 'desc')
+	    									->get();
+
 		$funcion 						= 	$this;
+
 
 
 		return View::make('despacho/listaordendespacho',
@@ -353,81 +688,37 @@ class PedidoDespachoController extends Controller
 						 	'idopcion' 								=> $idopcion,
 						 	'listaordendespacho' 					=> $listaordendespacho,
 						 	'funcion' 								=> $funcion,
+						 	'fechainicio' 							=> $fechainicio,
+						 	'fechafin' 								=> $fechafin,
 						 ]);
 
 	}
 
 
 
-	public function actionCrearPedidoDepacho($idopcion,Request $request)
+
+	public function actionAjaxListaPedidosDespacho(Request $request)
 	{
 
-		/******************* validar url **********************/
-		$validarurl = $this->funciones->getUrl($idopcion,'Anadir');
-	    if($validarurl <> 'true'){return $validarurl;}
-	    /******************************************************/
-
-		if($_POST)
-		{
 
 
-			/*try{
+		$fechainicio 					=  	$request['fechainicio'];
+		$fechafin 						=  	$request['fechafin'];
 
-				DB::beginTransaction();
+	    $listaordendespacho 			=   WEBDetalleOrdenDespacho::where('fecha_pedido','>=', $fechainicio)
+	    									->where('fecha_pedido','<=', $fechafin)
+	    									->orderBy('fecha_crea', 'desc')
+	    									->get();
 
-				$osirismasivo 							= 	new OsirisMasivo();
-				$notacredito                    		=   new NotaCredito();
+		$funcion 						= 	$this;
 
-				$array_lista_detalle_producto 			= 	json_decode($request['array_lista_detalle_producto']);
-				$contrato_id 							= 	$request['cuenta_id'];
-				$motivo_id 								= 	$request['motivo_id'];
-				$glosa 									= 	$request['glosa'];
-				$informacionadicional 					= 	$request['informacionadicional'];
-				$serie 									= 	$request['serie'];
-				$direccion_id 							= 	$notacredito->direccion_cuenta_boleta($contrato_id);
-				$funcion  								= 	$this;
-				$data_cod_orden_venta  					= 	$request['data_cod_orden_venta'];
-	            $lote                         			=   $this->funciones->generar_lote('WEB.documento_nota_credito',6);
+		return View::make('despacho/ajax/alistapedidosdespachos',
+						 [
+						 	'listaordendespacho' 					=> $listaordendespacho,
+						 	'funcion' 								=> $funcion,
+						 	'ajax' 									=> true,
+						 ]);
 
-
-				foreach($array_lista_detalle_producto as $key => $obj){
-
-					$numero_documento					= 	$notacredito->numero_documento($serie,'TDO0000000000007');
-					$totalnotacredito					= 	(float)$obj->total;
-					$documento_relacionado_id			= 	$obj->documento_id;
-					$array_productos					= 	$obj->detalle_productos;
-
-					$respuesta 							=  	$osirismasivo->guardar_nota_credito($contrato_id,$direccion_id,$serie,$motivo_id,$glosa,$informacionadicional,$numero_documento,$funcion,$totalnotacredito,$documento_relacionado_id,$array_productos,$data_cod_orden_venta,$lote);
-
-
-				}	
-
-				$nota_credito 							=	WEBDocumentoNotaCredito::where('lote','=',$lote)->get();
-				DB::commit();
-	 			return Redirect::to('/gestion-de-generacion-nota-credito-masivo/'.$idopcion)->with('bienhecho', ' '.count($nota_credito).' notas de creditos creadas - lote('.$lote.')');
-
-			}catch(Exception $ex){
-				DB::rollback();
-				return Redirect::to('/gestion-de-orden-compra-servicios/'.$idopcion)->with('errorbd', 'Ocurrio un error inesperado. Porfavor contacte con el administrador del sistema : '.$ex);	
-			}*/
-
-		}else{
-                                   
-			$comboclientes				= 	$this->funciones->combo_clientes_cuenta();
-			$grupo						= 	0;
-			$correlativo				= 	0;
-
-
-			return View::make('despacho/crearordenpedidodespacho',
-							 [
-							 	'idopcion' 			=> $idopcion,
-								'comboclientes' 	=> $comboclientes,						
-								'inicio'			=> $this->inicio,
-								'hoy'				=> $this->fin,
-							 	'grupo' 			=> $grupo,
-							 	'correlativo' 		=> $correlativo,
-							 ]);
-		}
 	}
 
 
@@ -440,6 +731,7 @@ class PedidoDespachoController extends Controller
 		$funcion 						= 	$this;
 
 	    $listaproductos 				= 	DB::table('WEB.LISTAPRODUCTOSAVENDER')
+	    									->whereIn('COD_CATEGORIA_UNIDAD_MEDIDA',['UME0000000000001','UME0000000000013'])
 				    					 	->orderBy('NOM_PRODUCTO', 'asc')
 				    					 	->get();
 
@@ -448,9 +740,16 @@ class PedidoDespachoController extends Controller
 		$empresa_id 					= 	Session::get('empresas')->COD_EMPR;
 		$centro_id 						= 	Session::get('centros')->COD_CENTRO;
 		$cliente 						= 	WEBListaCliente::where('COD_CONTRATO','=',$cuenta_id)->first();
+		
+		if(count($cliente)>0){
+			$cliente_id = $cliente->id;
+		}else{
+			$cliente_id = "";
+		}
+
 		$fecha_inicio 					= 	$this->fecha_menos_treinta_dias;
 		$fecha_fin 						= 	$this->inicio;
-		$listaordencen					= 	$this->funciones->lista_orden_cen($empresa_id,$cliente->id,$centro_id,$fecha_inicio,$fecha_fin);
+		$listaordencen					= 	$this->funciones->lista_orden_cen($empresa_id,$cliente_id,$centro_id,$fecha_inicio,$fecha_fin);
 		$combotipogrupo					= 	array('oc_grupo' => "Grupo",'oc_individual' => "Individual"); 	
 
 
