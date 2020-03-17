@@ -28,4 +28,9 @@ class STDEmpresa extends Model
     }
 
 
+    public function ordendespacho()
+    {
+        return $this->hasMany('App\WEBOrdenDespacho', 'empresa_id', 'id');
+    }
+
 }

@@ -13,20 +13,17 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-table">
-                <div class="panel-heading">Lista de pedidos para despacho
+                <div class="panel-heading">Lista de pedidos para atender
                   <div class="tools tooltiptop">
 
-                      <a href="#" class="tooltipcss opciones" id='buscarpedidodespacho'>
+                      <a href="#" class="tooltipcss opciones" id='buscarpedidoatender'>
                         <span class="icon mdi mdi-search"></span>
                       </a>
 
-                      <a href="{{ url('/crear-orden-pedido-despacho/'.$idopcion) }}" class="tooltipcss opciones">
-                        <span class="tooltiptext">Crear pedidos para despacho</span>
-                        <span class="icon mdi mdi-plus-circle-o"></span>
-                      </a>
+                      <input type="hidden" name="opcion_id" id= 'opcion_id' value = '{{$idopcion}}'>
 
                   </div>
-                  <span class="panel-subtitle">Lista de todos los pedidos para despacho que se realizarón  </span>
+                  <span class="panel-subtitle">Lista de todos los pedidos para atender que se realizarón  </span>
                 </div>
                 <div class="panel-body">
 
@@ -39,7 +36,6 @@
                           <div class="form-group ">
                             <label class="col-sm-12 control-label labelleft" >Fecha Inicio:</label>
                             <div class="col-sm-12 abajocaja" >
-
                               <div data-min-view="2" 
                                      data-date-format="dd-mm-yyyy"  
                                      class="input-group date datetimepicker " style = 'padding: 0px 0;margin-top: -3px;'>
@@ -51,8 +47,7 @@
                                             required = ""
                                             class="form-control"/>
                                       <span class="input-group-addon btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></span>
-                              </div>
-                              
+                                </div>
                             </div>
                           </div>
                       </div> 
@@ -82,9 +77,9 @@
 
 
 
-                  <div class='listatablapedidosdespachos listajax' style = 'font-size: 0.9em;'>
+                  <div class='listatablapedidosatender listajax' >
 
-                    @include('despacho.ajax.alistapedidosdespachos')
+                    @include('despacho.ajax.alistarpedidoatender')
 
                   </div>
 
@@ -107,11 +102,7 @@
   <script src="{{ asset('public/lib/datatables/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('public/lib/datatables/js/responsive.bootstrap.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('public/lib/datatables/js/dataTables.rowsGroup.js') }}" type="text/javascript"></script>
-
   <script src="{{ asset('public/js/app-tables-datatables.js?v='.$version) }}" type="text/javascript"></script>
-
-
-
 
 
   <script src="{{ asset('public/lib/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>

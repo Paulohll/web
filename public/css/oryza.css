@@ -60,11 +60,11 @@
 
 
 #table_group .group {
-  background-color: #5cb85c;
+  background-color: #f0f0f0;
   font-weight: bold;
   font-style: italic;
   cursor: pointer;
-  color: #fff;
+  color: #000;
 }
 #table_group .group td{
   font-weight: bold;

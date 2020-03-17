@@ -14,7 +14,20 @@ class WEBOrdenDespacho extends Model
 
     public function detalleordendespacho()
     {
-        return $this->hasMany('App\WEBDetalleOrdenDespacho', 'ordendespacho_id', 'id')->where('activo','=', 1);
+        return $this->hasMany('App\WEBDetalleOrdenDespacho', 'ordendespacho_id', 'id')->where('activo','=', 1)->orderBy('grupo_movil', 'asc');
     }
+
+
+    public function empresa()
+    {
+        return $this->belongsTo('App\STDEmpresa', 'empresa_id', 'COD_EMPR');
+    }
+
+
+    public function centro()
+    {
+        return $this->belongsTo('App\ALMCentro', 'centro_id', 'COD_CENTRO');
+    }
+
     
 }

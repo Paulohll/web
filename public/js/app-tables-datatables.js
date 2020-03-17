@@ -92,7 +92,10 @@ var App = (function () {
     });
 
 
-
+    $("#despacholopatender").dataTable({
+        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+        "bPaginate": false
+    });
 
 
 
@@ -100,6 +103,8 @@ var App = (function () {
         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
         "bPaginate": false
     });
+
+    
 
     $("#despacholocen").dataTable({
         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],

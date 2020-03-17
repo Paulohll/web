@@ -4,8 +4,54 @@ $(document).ready(function(){
 	var carpeta = $("#carpeta").val();
 
 
+    $(".listadespacho").on('click','#buscarpedidoatender', function() {
 
-    $(".listaregladescuento").on('click','#buscarpedidodespacho', function() {
+        var _token              = $('#token').val();
+        var fechainicio         = $('#fechainicio').val();        
+        var fechafin            = $('#fechafin').val();
+        var opcion_id           = $('#opcion_id').val();
+        /****** VALIDACIONES ********/
+
+        if(fechainicio == ''){
+            alerterrorajax("Seleccione una fecha de inicio");
+            return false;
+        }
+
+        if(fechafin == ''){
+            alerterrorajax("Seleccione una fecha de fin");
+            return false;
+        } 
+
+        abrircargando(); 
+        $(".listatablapedidosatender").html("");
+
+        $.ajax({
+            type    :   "POST",
+            url     :   carpeta+"/ajax-lista-atender-pedidos-despacho",
+            data    :   {
+                            _token          : _token,
+                            fechainicio     : fechainicio,
+                            fechafin        : fechafin                            
+                        },
+            success: function (data) {
+                cerrarcargando();
+                $(".listatablapedidosatender").html(data);                
+            },
+            error: function (data) {
+                cerrarcargando();
+                if(data.status = 500){
+                    var contenido = $(data.responseText);
+                    alerterror505ajax($(contenido).find('.trace-message').html());  
+                    console.log($(contenido).find('.trace-message').html());     
+                }
+            }
+        });
+
+    });
+
+
+
+    $(".listadespacho").on('click','#buscarpedidodespacho', function() {
 
         var _token              = $('#token').val();
         var fechainicio         = $('#fechainicio').val();        

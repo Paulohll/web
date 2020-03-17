@@ -15,16 +15,29 @@ use PDO;
 class Funcion{
 
 
+
+	public function cantidad_mobil_cero($ordendespacho_id){
+	    
+		$listadetalleordendespacho    =	WEBDetalleOrdenDespacho::where('ordendespacho_id','=',$ordendespacho_id)
+										->where('grupo_movil','=','0')
+										->get();
+
+ 	    return count($listadetalleordendespacho);
+	}
+
 	public function totales_kilos_palets_tabla($ordendespacho_id,$grupo_movil,$atributo){
 	    
 	    $total = 0;
 		$listadetalleordendespacho    =	WEBDetalleOrdenDespacho::where('ordendespacho_id','=',$ordendespacho_id)->get();
+
 		foreach($listadetalleordendespacho as $index => $item){
 			if($item->grupo_movil == $grupo_movil){
 	    		 $total = $total + (float)$item->$atributo;
 	    	}
-
 		}
+
+
+		
  	    return $total;
 	}
 
@@ -743,6 +756,18 @@ class Funcion{
 	public function pedido_producto_registrado($pedido) {
 
 		$detalle_pedido 		= 		WEBDetallePedido::where('pedido_id','=',$pedido->id)
+										->where('estado_id','=','EPP0000000000004')
+										->where('activo','=',1)
+										->get();
+
+		return count($detalle_pedido);				
+
+	}
+
+
+	public function pedido_producto_registrado_despacho($pedido) {
+
+		$detalle_pedido 		= 		WEBDetalleOrdenDespacho::where('ordendespacho_id','=',$pedido->id)
 										->where('estado_id','=','EPP0000000000004')
 										->where('activo','=',1)
 										->get();

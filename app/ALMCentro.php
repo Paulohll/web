@@ -17,6 +17,12 @@ class ALMCentro extends Model
         return $this->hasMany('App\WEBUserEmpresaCentro', 'centro_id', 'id');
     }
 
+    public function ordendespacho()
+    {
+        return $this->hasMany('App\WEBOrdenDespacho', 'centro_id', 'id');
+    }
+
+
 }
 
 

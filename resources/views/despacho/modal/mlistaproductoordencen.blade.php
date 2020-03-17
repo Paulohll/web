@@ -6,8 +6,6 @@
   </div>
 </div>
 
-
-
 <div id="modal-entrega" class="modal-container modal-effect-1">
 	<div class="modal-content">
 	  <div class="modal-header">
@@ -48,16 +46,18 @@
 	</div>
 </div>
 
-
 <div id="modal-cofiguracion-cantidad" class="modal-container colored-header colored-header-success modal-effect-10">
 	<div class="modal-content modal-configuracion-container">
 
 	</div>
 </div>
 
+<div id="modal-detalledocumento-atender" class="modal-container full-width  colored-header colored-header-primary modal-effect-10">
+  <div class="modal-content modal-detalledocumento-atender-container">
+    
 
-
-
+  </div>
+</div>
 
 
 <div class="modal-overlay"></div>

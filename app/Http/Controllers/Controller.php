@@ -47,6 +47,7 @@ class Controller extends BaseController
 		$this->fin 						= date_format(date_create(date('Y-m-d')), 'd-m-Y');
 		$this->messiguiente 			= date_format(date_create($fechames->format('Y-m-d')), 'd-m-Y');
 		$this->fechaactual 				= date('d-m-Y H:i:s');
+		$this->fecha_sin_hora 			= date('d-m-Y');
 		$this->fechaactualinput 		= date('d-m-Y H:i');
 		$this->prefijomaestro			= $this->funciones->prefijomaestra();
 		$this->fechavacia				= "1900-01-01 00:00:00.000";

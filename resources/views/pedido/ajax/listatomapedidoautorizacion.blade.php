@@ -1,4 +1,5 @@
-<table id="tablatomapedido" class="table table-striped table-hover table-fw-widget dt-responsive nowrap listatabla" style='width: 100%;'>
+<table id="tablatomapedido" class="table table-striped table-hover table-fw-widget dt-responsive nowrap listatabla" 
+style='width: 100%;font-size: 0.85em;'>
   <thead>
     <tr> 
 

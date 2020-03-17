@@ -213,6 +213,21 @@ Route::group(['middleware' => ['authaw']], function () {
 
 
 
+	Route::any('/gestion-de-atender-pedido/{idopcion}', 'AtenderPedidoDespachoController@actionListarAtenderPedido');
+	Route::any('/atender-orden-despacho/{idopcion}/{idordendespacho}', 'AtenderPedidoDespachoController@actionAtenderOrdenDespacho');
+	Route::any('/ajax-lista-atender-pedidos-despacho', 'AtenderPedidoDespachoController@actionAjaxListaAtenderPedidosDespacho');
+	Route::any('/ajax-modificar-cantidad-atender-producto-id', 'AtenderPedidoDespachoController@actionAjaxAjaxModificarCantidadAtenderProducto');
+	Route::any('/ajax-modal-lista-orden-atender-producto', 'AtenderPedidoDespachoController@actionAjaxModalListaOrdenAtenderProducto');
+	Route::any('/ajax-modal-agregar-producto-pedido-atender', 'AtenderPedidoDespachoController@actionAjaxModalAgregarProductosPedidoAtender');
+	Route::any('/ajax-pedido-atender-modificar-fecha-de-entrega', 'AtenderPedidoDespachoController@actionAjaxPedidoAtenderModificarFechaEntrega');
+
+
+
+
+	/*Route::any('/crear-orden-pedido-despacho/{idopcion}', 'PedidoDespachoController@actionCrearPedidoDepacho');*/
+
+
+
 
 
    	Route::get('buscarcliente', function (Illuminate\Http\Request  $request) {

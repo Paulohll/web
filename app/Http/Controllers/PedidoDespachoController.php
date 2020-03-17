@@ -46,6 +46,7 @@ class PedidoDespachoController extends Controller
 				$cabecera->estado_id 	    =  	'EPP0000000000002';
 				$cabecera->codigo 	    	=  	$codigo;
 				$cabecera->fecha_crea 	 	=   $this->fechaactual;
+				$cabecera->fecha_orden 	 	=   $this->fecha_sin_hora;
 				$cabecera->usuario_crea 	=   Session::get('usuario')->id;
 				$cabecera->empresa_id 		=   Session::get('empresas')->COD_EMPR;
 				$cabecera->centro_id 		=   Session::get('centros')->COD_CENTRO;
@@ -65,6 +66,8 @@ class PedidoDespachoController extends Controller
 					$detalle->fecha_entrega 			=  	$row['fecha_entrega'];
 					$detalle->muestra 					=  	$row['muestra'];
 					$detalle->cantidad 					=  	$row['cantidad'];
+					$detalle->cantidad_atender 			=  	(float)$row['cantidad'] + (float)$row['muestra'];
+
 					$detalle->kilos 					=  	$row['kilos'];
 					$detalle->cantidad_sacos 			=  	$row['cantidad_sacos'];
 					$detalle->palets 					=  	$row['palets'];
@@ -78,7 +81,7 @@ class PedidoDespachoController extends Controller
 					$detalle->fecha_crea 	 			=   $this->fechaactual;
 					$detalle->usuario_crea 				=   Session::get('usuario')->id;
 					$detalle->unidad_medida_id 			=  	$row['unidad_medida_id'];
-
+					$detalle->modulo 					=  	'generar_pedido';
 					$detalle->cliente_id 				=  	$row['empresa_cliente_id'];
 					$detalle->orden_id 					=  	$row['orden_id'];
 					$detalle->producto_id 				=  	$row['producto_id'];
@@ -571,9 +574,6 @@ class PedidoDespachoController extends Controller
 
 			$rowspan 						= 	$rowspan + 1;
 			array_push($array_detalle_producto,$array_nuevo_producto);
-
-
-
 		}
 
 		if(count($array_detalle_producto_request)>0){
