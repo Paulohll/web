@@ -424,12 +424,17 @@ class NotaCreditoMasivoController extends Controller
 		/******************* validar url **********************/
 		$validarurl = $this->funciones->getUrl($idopcion,'Ver');
 	    if($validarurl <> 'true'){return $validarurl;}
-	    /******************************************************/
+	    /******************************************/
+
+		$fechainicio  		= 	$this->inicio;
+		$fechafin  			= 	$this->fin;
 
 	    $listadocumentonotacredito 		= 	WEBDocumentoNotaCredito::join('WEB.documento_asociados', 
 	    									'WEB.documento_asociados.documento_nota_credito_id', '=', 'WEB.documento_nota_credito.id')
 	    									->where('WEB.documento_nota_credito.empresa_id','=',Session::get('empresas')->COD_EMPR)
 	    									->where('WEB.documento_nota_credito.txt_modulo','=','BOLETAS_MASIVAS')
+	    									->where('WEB.documento_nota_credito.fecha_crea','>=', $fechainicio)
+			    							->where('WEB.documento_nota_credito.fecha_crea','<=', $fechafin)
 	    									->orderBy('lote', 'asc')
 	    									->select('lote','nota_credito_id','codigo','contrato_id','orden_id','total_notacredito','documento_id',
 	    									'WEB.documento_nota_credito.fecha_crea',

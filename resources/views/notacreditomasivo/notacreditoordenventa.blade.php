@@ -10,7 +10,7 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="panel panel-default panel-table">
-                <div class="panel-heading">Lista de nota de credito masivas
+                <div class="panel-heading">Lista de nota de credito masivas (Ultimo mes)
                   <div class="tools">
                     <a href="{{ url('/crear-nota-credito-masiva/'.$idopcion) }}" data-toggle="tooltip" data-placement="top" title="crear nota de credito masiva">
                       <span class="icon mdi mdi-plus-circle-o"></span>
