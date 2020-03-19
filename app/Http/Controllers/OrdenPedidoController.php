@@ -615,13 +615,18 @@ class OrdenPedidoController extends Controller
 
 	    $listapedidos			= 	WEBPedido::where('activo','=',1)
 		    						->leftJoin('CMP.CATEGORIA', 'CMP.CATEGORIA.COD_CATEGORIA', '=', 'web.pedidos.estado_id')
-		    						->whereIn('estado_id', ['EPP0000000000003','EPP0000000000004'])
+		    						->whereIn('estado_id', ['EPP0000000000003'])
 			    					->where('fecha_venta','>=', $fechainicio)
 			    					->where('fecha_venta','<=', $fechafin)
 									//->where('empresa_id','=',Session::get('empresas')->COD_EMPR)
 									->where('centro_id','=',Session::get('centros')->COD_CENTRO)
 		    						->orderBy('fecha_venta', 'desc')
 		    						->get();
+
+
+		$combo_estados  		= 	array('EPP0000000000003' => "AUTORIZADO",
+									'EPP0000000000004' => "EJECUTADO");
+
 
 		$funcion 					= 	$this;
 
@@ -632,6 +637,7 @@ class OrdenPedidoController extends Controller
 						 	'fechainicio' 	=> $fechainicio,
 						 	'fechafin' 		=> $fechafin,
 						 	'funcion' 		=> $funcion,
+						 	'combo_estados' => $combo_estados,
 						 ]);
 	}
 	public function actionAjaxListarTomaPedido(Request $request)
@@ -639,10 +645,12 @@ class OrdenPedidoController extends Controller
 
 		$finicio 		=  date_format(date_create($request['finicio']), 'd-m-Y');
 		$ffin 			=  date_format(date_create($request['ffin']), 'd-m-Y');
+		$estado_id 		=  $request['estado_id'];
+
 
 	    $listapedidos	= 	WEBPedido::where('activo','=',1)
 	    					->leftJoin('CMP.CATEGORIA', 'CMP.CATEGORIA.COD_CATEGORIA', '=', 'web.pedidos.estado_id')
-	    					->whereIn('estado_id', ['EPP0000000000003','EPP0000000000004'])
+	    					->whereIn('estado_id', [$estado_id])
 							//->where('empresa_id','=',Session::get('empresas')->COD_EMPR)
 							->where('centro_id','=',Session::get('centros')->COD_CENTRO)
 		    				->where('fecha_venta','>=', $finicio)

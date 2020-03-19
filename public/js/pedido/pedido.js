@@ -173,6 +173,7 @@ $(document).ready(function(){
         event.preventDefault();
         var finicio     = $('#finicio').val();
         var ffin        = $('#ffin').val();
+
         var _token      = $('#token').val();
         $(".listatablapedido").html("");
         abrircargando();
@@ -183,6 +184,7 @@ $(document).ready(function(){
             data    :   {
                             _token  : _token,
                             finicio : finicio,
+
                             ffin    : ffin
                         },
             success: function (data) {
@@ -393,6 +395,8 @@ $(document).ready(function(){
         event.preventDefault();
         var finicio     = $('#finicio').val();
         var ffin        = $('#ffin').val();
+        var estado_id   = $('#estado_id').val();
+
         var _token      = $('#token').val();
         $(".listatablapedido").html("");
         abrircargando();
@@ -403,6 +407,7 @@ $(document).ready(function(){
             data    :   {
                             _token  : _token,
                             finicio : finicio,
+                            estado_id : estado_id,
                             ffin    : ffin
                         },
             success: function (data) {

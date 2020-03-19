@@ -1,3 +1,7 @@
+
+.tamanio-sm .select2-selection {
+  height: 42px !important;
+}
 .despacho_totales{
   background: #e2d9d9;
   font-weight: bold !important;

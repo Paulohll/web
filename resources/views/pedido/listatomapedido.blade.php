@@ -85,6 +85,25 @@
                             </div>
                           </div>
                       </div>
+
+
+                      <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+
+                          <div class="form-group">
+                            <label class="col-sm-12 control-label" >Estado :</label>
+                            <div class="col-sm-12 abajocaja tamanio-sm" >
+                              {!! Form::select( 'estado_id', $combo_estados, array(),
+                                                [
+                                                  'class'       => 'select2 form-control control input-sm' ,
+                                                  'id'          => 'estado_id',
+                                                  'required'    => '',
+                                                  'data-aw'     => '1',
+                                                ]) !!}
+                            </div>
+                          </div>
+                      </div> 
+
+
                     </div>
 
                   </div>
