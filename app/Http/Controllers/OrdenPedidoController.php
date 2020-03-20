@@ -167,12 +167,16 @@ class OrdenPedidoController extends Controller
 
 				    $pedido->estado_id 				 	= 	'EPP0000000000005';
 					$pedido->fecha_autorizacion 	 	=   $this->fechaactual;
+				    $pedido->ind_notificacion_rechazado = 	0;
 					$pedido->usuario_autorizacion 		=   Session::get('usuario')->id;
    					$pedido->save();
 
 					WEBDetallePedido::where('pedido_id','=',$pedido_id)
 					->where('activo','=',1)
-					->update(['estado_id' => 'EPP0000000000005', 'fecha_mod' =>  $this->fechaactual,'usuario_mod' => Session::get('usuario')->id]);
+					->update([	'estado_id' => 'EPP0000000000005',
+								'fecha_mod' =>  $this->fechaactual,
+								'usuario_mod' => Session::get('usuario')->id
+							]);
 
 
 
@@ -429,7 +433,10 @@ class OrdenPedidoController extends Controller
 			    if($pedido->estado_id == 'EPP0000000000003'){ 
 
 					WEBDetallePedido::whereIn('id',$array_detalle_pedido_id)
-					->update(['estado_id' => 'EPP0000000000005', 'fecha_mod' =>  $this->fechaactual,'usuario_mod' => Session::get('usuario')->id]);
+					->update([	'estado_id' => 'EPP0000000000005',
+								'fecha_mod' =>  $this->fechaactual,
+								'usuario_mod' => Session::get('usuario')->id
+							]);
 
 					$this->funciones->estado_pedido_ejecutado($pedido);
 				
@@ -626,6 +633,7 @@ class OrdenPedidoController extends Controller
 
 		$combo_estados  		= 	array('EPP0000000000003' => "AUTORIZADO",
 									'EPP0000000000004' => "EJECUTADO",
+									'EPP0000000000005' => "RECHAZADO",
 									'TODOS' => "TODOS");
 
 
@@ -843,7 +851,8 @@ class OrdenPedidoController extends Controller
 				$cabecera->recibo_conformidad  			= 	$request['recibo'];
 				$cabecera->glosa  						= 	$request['obs'];
 				$cabecera->ind_notificacion 	    	=  	0;
-				$cabecera->ind_notificacion_autorizacion 	=   -1;
+				$cabecera->ind_notificacion_autorizacion =   -1;
+				$cabecera->ind_notificacion_rechazado 	=   -1;
 				$cabecera->ind_notificacion_despacho 	=   -1;
 				$np=$cabecera;
 				$cabecera->save();

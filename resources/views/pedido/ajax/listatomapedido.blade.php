@@ -59,17 +59,18 @@
 
         <td>
             @if($item->COD_CATEGORIA == 'EPP0000000000003') 
-
               @if($funcion->funciones->pedido_producto_registrado($item) == '0') 
                 <span class="badge badge-warning">{{$item->NOM_CATEGORIA}}</span> 
               @else
                   <span class="badge badge-success">PARCIALMENTE ATENDIDA</span> 
               @endif
-              
             @else
-                <span class="badge badge-success">{{$item->NOM_CATEGORIA}}</span>
+              @if($item->COD_CATEGORIA == 'EPP0000000000005') 
+                  <span class="badge badge-danger">{{$item->NOM_CATEGORIA}}</span>
+              @else
+                  <span class="badge badge-success">{{$item->NOM_CATEGORIA}}</span>
+              @endif
             @endif
-
             <br>
             <span class="badge badge-defaul" style='margin-top:5px'>
               <a href="{{ url('/imprimir-pedido/'.Hashids::encode(substr($item->id, -8))) }}" target="_blank">

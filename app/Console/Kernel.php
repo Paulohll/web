@@ -9,6 +9,8 @@ use App\Console\Commands\AlertaDesactivarReglas;
 use App\Console\Commands\PedidoNotificacionVendedor;
 use App\Console\Commands\PedidoNotificacionAutorizar;
 use App\Console\Commands\PedidoNotificacionDespacho;
+use App\Console\Commands\PedidoNotificacionRechazado;
+
 use App\Console\Commands\CampanaUtiles;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -29,6 +31,7 @@ class Kernel extends ConsoleKernel
         PedidoNotificacionVendedor::class,
         PedidoNotificacionAutorizar::class,
         PedidoNotificacionDespacho::class,
+        PedidoNotificacionRechazado::class,
         CampanaUtiles::class
 
     ];
@@ -49,6 +52,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('pedidonotificacion:despacho')->everyMinute(); // CADA MINUTO
         $schedule->command('pedidonotificacion:autorizar')->everyMinute(); // CADA MINUTO
         $schedule->command('pedidonotificacion:vendedor')->everyMinute(); // CADA MINUTO
+        $schedule->command('pedidonotificacion:rechazado')->everyMinute(); // CADA MINUTO
         $schedule->command('desactivarreglas:desactivarreglasContrato')->everyMinute(); // CADA MINUTO
         $schedule->command('alertadesactivarreglas:desactivarreglasmanana')->dailyAt('08:00');
         //$schedule->command('redessociales:publicidadredessociales')->dailyAt('13:59');
